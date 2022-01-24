@@ -1,0 +1,37 @@
+{
+  "name": "ngx-onscreen-twelvekeyboard",
+  "description": "A twelve key (0-9, * and #) keypad on-screen touch keyboard for Angular applications.",
+  "version": "1.0.0",
+  "keywords": [
+    "keyboard",
+    "keypad",
+    "t9",
+    "on-screen",
+    "onscreen",
+    "on screen",
+    "touch"
+  ],
+  "homepage": "https://github.com/dhoeppe/ngx-onscreen-twelvekeyboard",
+  "bugs": {
+    "url": "https://github.com/dhoeppe/ngx-onscreen-twelvekeyboard/issues"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Daniel Höppe"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dhoeppe/ngx-onscreen-twelvekeyboard"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "@angular/common": "^12.2.0",
+    "@angular/core": "^12.2.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "private": "false"
+}
