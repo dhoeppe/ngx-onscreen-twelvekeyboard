@@ -1,13 +1,15 @@
 import {NgModule} from '@angular/core';
-import { KeypadComponent } from './keypad/keypad.component';
+import {KeypadComponent} from './keypad/keypad.component';
 
 
 @NgModule({
             declarations: [
-    KeypadComponent
-  ],
+              KeypadComponent
+            ],
             imports:      [],
-            exports:      []
+            exports:      [
+              KeypadComponent
+            ]
           })
 export class TwelveKeyOskbModule {
 }

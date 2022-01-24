@@ -4,3 +4,4 @@
 
 export * from './lib/twelve-key-oskb.module';
 export * from './lib/key-assignments/key-assignments';
+export * from './lib/keypad/keypad.component';

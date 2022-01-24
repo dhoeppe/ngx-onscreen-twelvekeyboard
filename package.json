@@ -36,6 +36,7 @@
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
     "ng-packagr": "^12.1.1",
+    "ngx-onscreen-twelvekeyboard": "file:projects/ngx-onscreen-twelvekeyboard",
     "typescript": "~4.3.5"
   }
 }
