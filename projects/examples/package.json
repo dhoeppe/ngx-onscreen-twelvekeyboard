@@ -1,0 +1,9 @@
+{
+  "name": "examples",
+  "version": "1.0.0",
+  "dependencies": {
+    "@angular/cdk": "~12.2.13",
+    "@angular/material": "~12.2.13",
+    "ngx-onscreen-twelvekeyboard": "file:../../dist/ngx-onscreen-twelvekeyboard"
+  }
+}

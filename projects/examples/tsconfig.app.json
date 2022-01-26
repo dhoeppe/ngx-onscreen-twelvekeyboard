@@ -3,7 +3,15 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../../out-tsc/app",
-    "types": []
+    "types": [],
+    "paths": {
+      "@angular/*": [
+        "./node_modules/@angular/*"
+      ],
+      "ngx-onscreen-twelvekeyboard": [
+        "../ngx-onscreen-twelvekeyboard/src/public-api"
+      ]
+    }
   },
   "files": [
     "src/main.ts",

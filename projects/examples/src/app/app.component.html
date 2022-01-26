@@ -1,1 +1,10 @@
-<osk-keypad></osk-keypad>
+<ng-template #buttonTemplate let-content="content">
+  <button mat-stroked-button>
+    <ng-container [ngTemplateOutlet]="content"></ng-container>
+  </button>
+</ng-template>
+
+<input>
+
+<osk-keypad [buttonTemplate]="buttonTemplate">
+</osk-keypad>
