@@ -1,55 +1,97 @@
+<ng-template #defaultButtonTemplate let-content="content">
+  <button>
+    <ng-container [ngTemplateOutlet]="content"></ng-container>
+  </button>
+</ng-template>
+
 <div class="button-container">
   <div class="button-row">
-    <button>
-      <span>1</span><br>
-      <span>&#x002e;&#x0040;&#x0026;</span>
-    </button>
-    <button>
-      <span>2</span><br>
-      <span>ABC</span>
-    </button>
-    <button>
-      <span>3</span><br>
-      <span>DEF</span>
-    </button>
+    <ng-container [ngTemplateOutletContext]="{content: buttonOneContent}"
+                  [ngTemplateOutlet]="buttonTemplate || defaultButtonTemplate">
+      <ng-template #buttonOneContent>
+        <span>1<br>
+              &#x002e;&#x0040;&#x0026;</span>
+      </ng-template>
+    </ng-container>
+    <ng-container [ngTemplateOutletContext]="{content: buttonTwoContent}"
+                  [ngTemplateOutlet]="buttonTemplate || defaultButtonTemplate">
+      <ng-template #buttonTwoContent>
+        <span>2<br>
+        ABC</span>
+      </ng-template>
+    </ng-container>
+    <ng-container [ngTemplateOutletContext]="{content: buttonThreeContent}"
+                  [ngTemplateOutlet]="buttonTemplate || defaultButtonTemplate">
+      <ng-template #buttonThreeContent>
+        <span>3<br>
+        DEF</span>
+      </ng-template>
+    </ng-container>
   </div>
   <div class="button-row">
-    <button>
-      <span>4</span><br>
-      <span>GHI</span>
-    </button>
-    <button>
-      <span>5</span><br>
-      <span>JKL</span>
-    </button>
-    <button>
-      <span>6</span><br>
-      <span>MNO</span>
-    </button>
+    <ng-container [ngTemplateOutletContext]="{content: buttonFourContent}"
+                  [ngTemplateOutlet]="buttonTemplate || defaultButtonTemplate">
+      <ng-template #buttonFourContent>
+        <span>4<br>
+        GHI</span>
+      </ng-template>
+    </ng-container>
+    <ng-container [ngTemplateOutletContext]="{content: buttonFiveContent}"
+                  [ngTemplateOutlet]="buttonTemplate || defaultButtonTemplate">
+      <ng-template #buttonFiveContent>
+        <span>5<br>
+        JKL</span>
+      </ng-template>
+    </ng-container>
+    <ng-container [ngTemplateOutletContext]="{content: buttonSixContent}"
+                  [ngTemplateOutlet]="buttonTemplate || defaultButtonTemplate">
+      <ng-template #buttonSixContent>
+        <span>6<br>
+        MNO</span>
+      </ng-template>
+    </ng-container>
   </div>
   <div class="button-row">
-    <button>
-      <span>7</span><br>
-      <span>PQRS</span>
-    </button>
-    <button>
-      <span>8</span><br>
-      <span>TUV</span>
-    </button>
-    <button>
-      <span>9</span><br>
-      <span>WXYZ</span>
-    </button>
+    <ng-container [ngTemplateOutletContext]="{content: buttonSevenContent}"
+                  [ngTemplateOutlet]="buttonTemplate || defaultButtonTemplate">
+      <ng-template #buttonSevenContent>
+        <span>7<br>
+        PQRS</span>
+      </ng-template>
+    </ng-container>
+    <ng-container [ngTemplateOutletContext]="{content: buttonEightContent}"
+                  [ngTemplateOutlet]="buttonTemplate || defaultButtonTemplate">
+      <ng-template #buttonEightContent>
+        <span>8<br>
+        TUV</span>
+      </ng-template>
+    </ng-container>
+    <ng-container [ngTemplateOutletContext]="{content: buttonNineContent}"
+                  [ngTemplateOutlet]="buttonTemplate || defaultButtonTemplate">
+      <ng-template #buttonNineContent>
+        <span>9<br>
+        WXYZ</span>
+      </ng-template>
+    </ng-container>
   </div>
   <div class="button-row">
-    <button>
-      <span>*</span>
-    </button>
-    <button>
-      <span>0</span>
-    </button>
-    <button>
-      <span>#</span><br>
-    </button>
+    <ng-container [ngTemplateOutletContext]="{content: buttonTenContent}"
+                  [ngTemplateOutlet]="buttonTemplate || defaultButtonTemplate">
+      <ng-template #buttonTenContent>
+        <span>*</span>
+      </ng-template>
+    </ng-container>
+    <ng-container [ngTemplateOutletContext]="{content: buttonElevenContent}"
+                  [ngTemplateOutlet]="buttonTemplate || defaultButtonTemplate">
+      <ng-template #buttonElevenContent>
+        <span>0</span>
+      </ng-template>
+    </ng-container>
+    <ng-container [ngTemplateOutletContext]="{content: buttonTwelveContent}"
+                  [ngTemplateOutlet]="buttonTemplate || defaultButtonTemplate">
+      <ng-template #buttonTwelveContent>
+        <span>#</span>
+      </ng-template>
+    </ng-container>
   </div>
 </div>

@@ -1,9 +1,11 @@
 .button-container {
-  display: flex;
+  display:        flex;
   flex-direction: column;
+  row-gap: var(--osk-row-gap);
 }
 
-.button-row{
-  display: flex;
+.button-row {
+  display:        flex;
   flex-direction: row;
+  column-gap: var(--osk-col-gap);
 }

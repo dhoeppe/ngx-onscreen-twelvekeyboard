@@ -19,7 +19,56 @@ languages [here](https://www.etsi.org/deliver/etsi_es/202100_202199/202130/02.01
 
 To add a language:
 
-1. Add the respective key-assignment file in `key-assignments` based on its ISO language name.
-2. Add the ISO-639-2/B code of the language to the mapping file `key-assignemnts/key-assignments.ts`.
+1. Add the respective key-assignment file
+   in [`src/lib/key-assignments`](projects/ngx-onscreen-twelvekeyboard/src/lib/key-assignments)
+   based on its ISO language name.
+2. Add the ISO-639-2/B code of the language to the mapping
+   file [`src/lib/key-assignments/key-assignments.ts`](projects/ngx-onscreen-twelvekeyboard/src/lib/key-assignments/key-assignments.ts)
+   .
 3. Feel free to submit a pull request with the added language.
 
+## Usage
+
+### Theming
+
+`KeypadComponent` is styled using flexbox. It takes the following CSS variables:
+
+- `--osk-row-gap`: Row gap between the button rows.
+- `--osk-col-gap`: Column gap between the button columns.
+
+Also see [Custom button template](#button-template)
+
+### Custom button template <a name="button-template"></a>
+
+To define your own button template `KeypadComponent` accepts a `TemplateRef` through
+the `buttonTemplate` input.
+
+Define a template in your code, for example to style the buttons as Angular
+Materials `mat-raised-button`.
+
+```angular2html
+
+<ng-template #youMayUseAnyName let-content="content">
+  <button mat-raised-button>
+    <ng-container [ngTemplateOutlet]="content"></ng-container>
+  </button>
+</ng-template>
+```
+
+And then pass it on to the `KeypadComponent`.
+
+```angular2html
+
+<osk-keypad [buttonTemplate]="youMayUseAnyName"></osk-keypad>
+```
+
+#### Details
+
+- If no template is provided,
+  the [default template](projects/ngx-onscreen-twelvekeyboard/src/lib/keypad/keypad.component.html)
+  is used.
+- It is required to specify the `ng-container` element in your template and pass the content from
+  the template variable to it, otherwise the buttons will have no content. If desired you can omit
+  the `ng-container` element and place your own content, mind that in this case, all buttons will
+  have the same content. Please create an issue if you have a use case, where the default behavior
+  is not sufficient.
