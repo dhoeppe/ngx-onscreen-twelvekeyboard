@@ -1,26 +1,26 @@
-<ng-template #defaultButtonTemplate let-content="content">
-  <button>
+<ng-template #defaultButtonTemplate let-click="click" let-content="content">
+  <button (click)="click()">
     <ng-container [ngTemplateOutlet]="content"></ng-container>
   </button>
 </ng-template>
 
 <div class="button-container">
   <div class="button-row">
-    <ng-container [ngTemplateOutletContext]="{content: buttonOneContent}"
+    <ng-container [ngTemplateOutletContext]="{content: buttonOneContent, click: getButtonClickFunction('1')}"
                   [ngTemplateOutlet]="buttonTemplate || defaultButtonTemplate">
       <ng-template #buttonOneContent>
         <span>1<br>
               &#x002e;&#x0040;&#x0026;</span>
       </ng-template>
     </ng-container>
-    <ng-container [ngTemplateOutletContext]="{content: buttonTwoContent}"
+    <ng-container [ngTemplateOutletContext]="{content: buttonTwoContent, click: getButtonClickFunction('2')}"
                   [ngTemplateOutlet]="buttonTemplate || defaultButtonTemplate">
       <ng-template #buttonTwoContent>
         <span>2<br>
         ABC</span>
       </ng-template>
     </ng-container>
-    <ng-container [ngTemplateOutletContext]="{content: buttonThreeContent}"
+    <ng-container [ngTemplateOutletContext]="{content: buttonThreeContent, click: getButtonClickFunction('3')}"
                   [ngTemplateOutlet]="buttonTemplate || defaultButtonTemplate">
       <ng-template #buttonThreeContent>
         <span>3<br>
@@ -29,21 +29,21 @@
     </ng-container>
   </div>
   <div class="button-row">
-    <ng-container [ngTemplateOutletContext]="{content: buttonFourContent}"
+    <ng-container [ngTemplateOutletContext]="{content: buttonFourContent, click: getButtonClickFunction('4')}"
                   [ngTemplateOutlet]="buttonTemplate || defaultButtonTemplate">
       <ng-template #buttonFourContent>
         <span>4<br>
         GHI</span>
       </ng-template>
     </ng-container>
-    <ng-container [ngTemplateOutletContext]="{content: buttonFiveContent}"
+    <ng-container [ngTemplateOutletContext]="{content: buttonFiveContent, click: getButtonClickFunction('5')}"
                   [ngTemplateOutlet]="buttonTemplate || defaultButtonTemplate">
       <ng-template #buttonFiveContent>
         <span>5<br>
         JKL</span>
       </ng-template>
     </ng-container>
-    <ng-container [ngTemplateOutletContext]="{content: buttonSixContent}"
+    <ng-container [ngTemplateOutletContext]="{content: buttonSixContent, click: getButtonClickFunction('6')}"
                   [ngTemplateOutlet]="buttonTemplate || defaultButtonTemplate">
       <ng-template #buttonSixContent>
         <span>6<br>
@@ -52,21 +52,21 @@
     </ng-container>
   </div>
   <div class="button-row">
-    <ng-container [ngTemplateOutletContext]="{content: buttonSevenContent}"
+    <ng-container [ngTemplateOutletContext]="{content: buttonSevenContent, click: getButtonClickFunction('7')}"
                   [ngTemplateOutlet]="buttonTemplate || defaultButtonTemplate">
       <ng-template #buttonSevenContent>
         <span>7<br>
         PQRS</span>
       </ng-template>
     </ng-container>
-    <ng-container [ngTemplateOutletContext]="{content: buttonEightContent}"
+    <ng-container [ngTemplateOutletContext]="{content: buttonEightContent, click: getButtonClickFunction('8')}"
                   [ngTemplateOutlet]="buttonTemplate || defaultButtonTemplate">
       <ng-template #buttonEightContent>
         <span>8<br>
         TUV</span>
       </ng-template>
     </ng-container>
-    <ng-container [ngTemplateOutletContext]="{content: buttonNineContent}"
+    <ng-container [ngTemplateOutletContext]="{content: buttonNineContent, click: getButtonClickFunction('9')}"
                   [ngTemplateOutlet]="buttonTemplate || defaultButtonTemplate">
       <ng-template #buttonNineContent>
         <span>9<br>
@@ -75,19 +75,19 @@
     </ng-container>
   </div>
   <div class="button-row">
-    <ng-container [ngTemplateOutletContext]="{content: buttonTenContent}"
+    <ng-container [ngTemplateOutletContext]="{content: buttonTenContent, click: getButtonClickFunction('*')}"
                   [ngTemplateOutlet]="buttonTemplate || defaultButtonTemplate">
       <ng-template #buttonTenContent>
         <span>*</span>
       </ng-template>
     </ng-container>
-    <ng-container [ngTemplateOutletContext]="{content: buttonElevenContent}"
+    <ng-container [ngTemplateOutletContext]="{content: buttonElevenContent, click: getButtonClickFunction('0')}"
                   [ngTemplateOutlet]="buttonTemplate || defaultButtonTemplate">
       <ng-template #buttonElevenContent>
         <span>0</span>
       </ng-template>
     </ng-container>
-    <ng-container [ngTemplateOutletContext]="{content: buttonTwelveContent}"
+    <ng-container [ngTemplateOutletContext]="{content: buttonTwelveContent, click: getButtonClickFunction('#')}"
                   [ngTemplateOutlet]="buttonTemplate || defaultButtonTemplate">
       <ng-template #buttonTwelveContent>
         <span>#</span>

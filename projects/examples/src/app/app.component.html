@@ -1,10 +1,10 @@
-<ng-template #buttonTemplate let-content="content">
-  <button mat-stroked-button>
+<ng-template #buttonTemplate let-click="click" let-content="content">
+  <button (click)="click()" mat-raised-button>
     <ng-container [ngTemplateOutlet]="content"></ng-container>
   </button>
 </ng-template>
 
-<input>
+<input matInput>
 
-<osk-keypad [buttonTemplate]="buttonTemplate">
+<osk-keypad [buttonTemplate]="buttonTemplate" [language]="'eng'" [timeoutDuration]="3000">
 </osk-keypad>
