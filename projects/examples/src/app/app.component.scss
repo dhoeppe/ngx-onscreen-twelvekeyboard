@@ -4,6 +4,45 @@
 }
 
 .button-class {
-  width:  4em;
-  height: 3em;
+  line-height: 1em;
+  padding: 1em;
+  height: 4em;
+  width: 4em;
+}
+
+.keypad-input-container {
+  display:        flex;
+  flex-direction: column;
+
+  width:          10em;
+  padding:        1em;
+}
+
+.keypad-container{
+  display: flex;
+  flex-direction: column;
+
+  row-gap: 1em;
+}
+
+.keypad-key-container {
+  position: absolute;
+  top: 2em;
+  width: inherit;
+
+  display:          flex;
+  flex-wrap:        wrap;
+
+  font-size:        2em;
+  padding:          0.5em;
+  background-color: burlywood;
+}
+
+.keypad-key {
+  font-family: monospace;
+  white-space: pre;
+
+  &.active {
+    background-color: red;
+  }
 }

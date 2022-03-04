@@ -4,6 +4,14 @@
   </button>
 </ng-template>
 
+<ng-template #defaultBackspaceTemplate>
+  <span><-</span>
+</ng-template>
+
+<ng-template #defaultClearTemplate>
+  <span>x</span>
+</ng-template>
+
 <div class="button-container">
   <div class="button-row">
     <ng-container [ngTemplateOutletContext]="{content: buttonOneContent, click: getButtonClickFunction('1')}"
@@ -17,14 +25,16 @@
                   [ngTemplateOutlet]="buttonTemplate || defaultButtonTemplate">
       <ng-template #buttonTwoContent>
         <span>2<br>
-        ABC</span>
+        <ng-container *ngIf="shift; else twoElse">ABC</ng-container>
+        <ng-template #twoElse>abc</ng-template></span>
       </ng-template>
     </ng-container>
     <ng-container [ngTemplateOutletContext]="{content: buttonThreeContent, click: getButtonClickFunction('3')}"
                   [ngTemplateOutlet]="buttonTemplate || defaultButtonTemplate">
       <ng-template #buttonThreeContent>
         <span>3<br>
-        DEF</span>
+        <ng-container *ngIf="shift; else threeElse">DEF</ng-container>
+        <ng-template #threeElse>def</ng-template></span>
       </ng-template>
     </ng-container>
   </div>
@@ -33,21 +43,24 @@
                   [ngTemplateOutlet]="buttonTemplate || defaultButtonTemplate">
       <ng-template #buttonFourContent>
         <span>4<br>
-        GHI</span>
+        <ng-container *ngIf="shift; else fourElse">GHI</ng-container>
+        <ng-template #fourElse>ghi</ng-template></span>
       </ng-template>
     </ng-container>
     <ng-container [ngTemplateOutletContext]="{content: buttonFiveContent, click: getButtonClickFunction('5')}"
                   [ngTemplateOutlet]="buttonTemplate || defaultButtonTemplate">
       <ng-template #buttonFiveContent>
         <span>5<br>
-        JKL</span>
+        <ng-container *ngIf="shift; else fiveElse">JKL</ng-container>
+        <ng-template #fiveElse>jkl</ng-template></span>
       </ng-template>
     </ng-container>
     <ng-container [ngTemplateOutletContext]="{content: buttonSixContent, click: getButtonClickFunction('6')}"
                   [ngTemplateOutlet]="buttonTemplate || defaultButtonTemplate">
       <ng-template #buttonSixContent>
         <span>6<br>
-        MNO</span>
+        <ng-container *ngIf="shift; else sixElse">MNO</ng-container>
+        <ng-template #sixElse>mno</ng-template></span>
       </ng-template>
     </ng-container>
   </div>
@@ -56,21 +69,24 @@
                   [ngTemplateOutlet]="buttonTemplate || defaultButtonTemplate">
       <ng-template #buttonSevenContent>
         <span>7<br>
-        PQRS</span>
+        <ng-container *ngIf="shift; else sevenElse">PQRS</ng-container>
+        <ng-template #sevenElse>pqrs</ng-template></span>
       </ng-template>
     </ng-container>
     <ng-container [ngTemplateOutletContext]="{content: buttonEightContent, click: getButtonClickFunction('8')}"
                   [ngTemplateOutlet]="buttonTemplate || defaultButtonTemplate">
       <ng-template #buttonEightContent>
         <span>8<br>
-        TUV</span>
+        <ng-container *ngIf="shift; else eightElse">TUV</ng-container>
+        <ng-template #eightElse>tuv</ng-template></span>
       </ng-template>
     </ng-container>
     <ng-container [ngTemplateOutletContext]="{content: buttonNineContent, click: getButtonClickFunction('9')}"
                   [ngTemplateOutlet]="buttonTemplate || defaultButtonTemplate">
       <ng-template #buttonNineContent>
         <span>9<br>
-        WXYZ</span>
+        <ng-container *ngIf="shift; else nineElse">WXYZ</ng-container>
+        <ng-template #nineElse>wxyz</ng-template></span>
       </ng-template>
     </ng-container>
   </div>
@@ -78,7 +94,12 @@
     <ng-container [ngTemplateOutletContext]="{content: buttonTenContent, click: getButtonClickFunction('*')}"
                   [ngTemplateOutlet]="buttonTemplate || defaultButtonTemplate">
       <ng-template #buttonTenContent>
-        <span>*</span>
+        <ng-container *ngIf="backspaceEnabled; else backspaceElse"
+                      [ngTemplateOutlet]="backspaceTemplate || defaultBackspaceTemplate">
+        </ng-container>
+        <ng-template #backspaceElse>
+          <span>*</span>
+        </ng-template>
       </ng-template>
     </ng-container>
     <ng-container [ngTemplateOutletContext]="{content: buttonElevenContent, click: getButtonClickFunction('0')}"
@@ -90,7 +111,12 @@
     <ng-container [ngTemplateOutletContext]="{content: buttonTwelveContent, click: getButtonClickFunction('#')}"
                   [ngTemplateOutlet]="buttonTemplate || defaultButtonTemplate">
       <ng-template #buttonTwelveContent>
-        <span>#</span>
+        <ng-container *ngIf="clearEnabled; else clearElse"
+                      [ngTemplateOutlet]="clearTemplate || defaultClearTemplate">
+        </ng-container>
+        <ng-template #clearElse>
+          <span>#</span>
+        </ng-template>
       </ng-template>
     </ng-container>
   </div>

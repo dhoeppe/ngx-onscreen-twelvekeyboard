@@ -15,6 +15,8 @@ import {keyAssignments} from '../key-assignments/key-assignments';
 
                          <osk-keypad [buttonTemplate]="buttonTemplate"
                                      [timeoutDuration]="2000"
+                                     [backspaceEnabled]="true"
+                                     [clearEnabled]="true"
                                      [language]="'eng'"></osk-keypad>
                        `
            })
@@ -97,21 +99,25 @@ describe('KeypadComponent', () => {
     expect(wrapperComponent.keypadComponent?.languageAssignment).toBeTruthy();
   });
 
-  it('should change bound value on button click', function () {
+  it('should change bound value on button click', fakeAsync(function () {
     const previousValue = component.value;
 
     keypad.querySelector('button')?.click();
 
-    expect(component.value).not.toEqual(previousValue);
-  });
+    tick(timeoutDuration + 200);
 
-  it('should emit event when value is changed', function () {
+    expect(component.value).not.toEqual(previousValue);
+  }));
+
+  it('should emit event when value is changed', fakeAsync(function () {
     const spy = spyOn(wrapperKeypadComponent.valueChange, 'emit');
 
     wrappedKeypad.querySelectorAll('button')[1]?.click();
 
+    tick(timeoutDuration + 200);
+
     expect(spy).toHaveBeenCalledWith(keyAssignments['eng'].keys['2'][0]);
-  });
+  }));
 
   it('should set button on button click', function () {
     wrappedKeypad.querySelectorAll('button')[0]?.click();
@@ -257,5 +263,139 @@ describe('KeypadComponent', () => {
     }
 
     expect(wrapperKeypadComponent.keyAssignmentIndex).toBe(0);
+  });
+
+  it('should reset index if a different button than set button is pressed within timer',
+     function () {
+       expect(wrapperKeypadComponent.keyAssignmentIndex).toBe(-1);
+
+       wrappedKeypad.querySelectorAll('button')[0]?.click();
+
+       expect(wrapperKeypadComponent.keyAssignmentIndex).toBe(0);
+
+       wrappedKeypad.querySelectorAll('button')[0]?.click();
+
+       expect(wrapperKeypadComponent.keyAssignmentIndex).toBe(1);
+
+       wrappedKeypad.querySelectorAll('button')[1]?.click();
+
+       expect(wrapperKeypadComponent.keyAssignmentIndex).toBe(0);
+     });
+
+  it('should set value only after timeout', fakeAsync(function () {
+    const spy = spyOn(wrapperKeypadComponent.valueChange, 'emit');
+
+    wrappedKeypad.querySelectorAll('button')[1]?.click();
+
+    expect(spy).not.toHaveBeenCalledWith(keyAssignments['eng'].keys['2'][0]);
+
+    tick(timeoutDuration + 200);
+
+    expect(spy).toHaveBeenCalledWith(keyAssignments['eng'].keys['2'][0]);
+  }));
+
+  it('should remove character if backspace is pressed', function () {
+    wrapperKeypadComponent.value = 'abc';
+
+    wrappedKeypad.querySelectorAll('button')[9]?.click();
+
+    expect(wrapperKeypadComponent.value).toBe('ab');
+  });
+
+  it('should clear input if clear is pressed', function () {
+    wrapperKeypadComponent.value = 'abc';
+
+    wrappedKeypad.querySelectorAll('button')[11]?.click();
+
+    expect(wrapperKeypadComponent.value).toBe('');
+  });
+
+  it('should render backspace button instead of star if configured', function () {
+    expect(wrappedKeypadDebug.queryAll(By.css('button'))[9].nativeElement.textContent.trim())
+      .toBe('<-');
+  });
+
+  it('should render clear button instead of hash if configured', function () {
+    expect(wrappedKeypadDebug.queryAll(By.css('button'))[11].nativeElement.textContent.trim())
+      .toBe('x');
+  });
+
+  it('should render capital characters when shift is true', function () {
+    expect(wrappedKeypadDebug.queryAll(By.css('button'))[8].nativeElement.textContent.trim())
+      .toBe('9wxyz');
+
+    wrapperKeypadComponent.shift = true;
+
+    wrapperComponentFixture.detectChanges();
+
+    expect(wrappedKeypadDebug.queryAll(By.css('button'))[8].nativeElement.textContent.trim())
+      .toBe('9WXYZ');
+  });
+
+  it('should submit character if another button than set button is pressed while timeout is active',
+     fakeAsync(function () {
+       wrappedKeypad.querySelectorAll('button')[1]?.click();
+
+       tick(timeoutDuration / 2);
+
+       wrappedKeypad.querySelectorAll('button')[2]?.click();
+
+       tick(timeoutDuration / 2);
+
+       expect(wrapperKeypadComponent.value).toBe('a');
+
+       tick(timeoutDuration + 200);
+     }));
+
+  it(
+    'should submit character if another button than set button is pressed while timeout is active, with character switch',
+    fakeAsync(function () {
+      wrappedKeypad.querySelectorAll('button')[1]?.click();
+      wrappedKeypad.querySelectorAll('button')[1]?.click();
+
+      tick(timeoutDuration / 2);
+
+      wrappedKeypad.querySelectorAll('button')[2]?.click();
+
+      expect(wrapperKeypadComponent.value).toBe('b');
+
+      tick(timeoutDuration + 200);
+    }));
+
+  it('should submit uppercase character if shift is enabled', fakeAsync(function () {
+    wrapperKeypadComponent.shift = true;
+
+    wrappedKeypad.querySelectorAll('button')[1]?.click();
+
+    tick(timeoutDuration + 200);
+
+    expect(wrapperKeypadComponent.value).toBe('A');
+  }));
+
+  it('should disable shift after character has been submitted by timeout', fakeAsync(function () {
+    const spy = spyOn(wrapperKeypadComponent.shiftChange, 'emit');
+
+    wrapperKeypadComponent.shift = true;
+
+    wrappedKeypad.querySelectorAll('button')[1]?.click();
+
+    tick(timeoutDuration + 200);
+
+    expect(wrapperKeypadComponent.value).toBe('A');
+    expect(wrapperKeypadComponent.shift).toBeFalsy();
+    expect(spy).toHaveBeenCalledWith(false);
+  }));
+
+  it('should disable shift after character has been submitted by clicking other key', function () {
+    const spy = spyOn(wrapperKeypadComponent.shiftChange, 'emit');
+
+    wrapperKeypadComponent.shift = true;
+
+    wrappedKeypad.querySelectorAll('button')[1]?.click();
+    wrappedKeypad.querySelectorAll('button')[2]?.click();
+
+    expect(wrapperKeypadComponent.value).toBe('A');
+    expect(wrapperKeypadComponent.shift).toBeFalsy();
+    expect(spy).toHaveBeenCalledWith(false);
   });
 });

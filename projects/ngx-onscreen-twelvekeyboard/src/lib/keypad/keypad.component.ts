@@ -20,6 +20,12 @@ export class KeypadComponent implements OnInit, OnDestroy {
   buttonTemplate: TemplateRef<any> | undefined;
 
   @Input()
+  backspaceTemplate: TemplateRef<any> | undefined;
+
+  @Input()
+  clearTemplate: TemplateRef<any> | undefined;
+
+  @Input()
   language: string | undefined;
 
   languageAssignment: ILanguageAssignment = keyAssignments['eng'];
@@ -29,6 +35,18 @@ export class KeypadComponent implements OnInit, OnDestroy {
 
   @Input()
   value: string = '';
+
+  @Input()
+  backspaceEnabled: boolean = false;
+
+  @Input()
+  clearEnabled: boolean = false;
+
+  @Input()
+  shift: boolean = false;
+
+  @Output()
+  shiftChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   @Output()
   valueChange: EventEmitter<string> = new EventEmitter<string>();
@@ -80,21 +98,51 @@ export class KeypadComponent implements OnInit, OnDestroy {
   }
 
   onButtonClick(button: string) {
-    this.setButton = button;
-    this.resetTimeout();
-    this.keyAssignmentIndex = (this.keyAssignmentIndex + 1) %
-                              this.languageAssignment.keys[button].length;
+    if (this.backspaceEnabled && button === '*') {
+      this.setValue(this.value.substring(0, this.value.length - 1));
+      this.setButton = undefined;
+    } else if (this.clearEnabled && button === '#') {
+      this.setValue('');
+      this.setButton = undefined;
+    } else {
+      if (button !== this.setButton) {
+        this.updateValue();
+        this.keyAssignmentIndex = 0;
+      } else {
+        this.keyAssignmentIndex = (this.keyAssignmentIndex + 1) %
+                                  this.languageAssignment.keys[button].length;
+      }
+      this.setButton = button;
+    }
 
-    this.setValue(this.languageAssignment.keys[button][this.keyAssignmentIndex]);
+    this.resetTimeout();
   }
 
   private resetTimeout() {
     window.clearTimeout(this._inputTimeout);
     this._inputTimeout = window.setTimeout(() => {
+      if (this.setButton) {
+        this.updateValue();
+      }
+
       this.setButton          = undefined;
       this.inputTimeout       = 0;
       this.keyAssignmentIndex = -1;
     }, this.timeoutDuration);
+  }
+
+  private setShift(value: boolean) {
+    this.shift = value;
+    this.shiftChange.emit(value);
+  }
+
+  private updateValue() {
+    if (this.setButton) {
+      const newCharacter = this.languageAssignment.keys[this.setButton][this.keyAssignmentIndex];
+      this.setValue(this.value +
+                    (this.shift ? newCharacter.toUpperCase() : newCharacter));
+      this.setShift(false);
+    }
   }
 
   private clearTimeout() {

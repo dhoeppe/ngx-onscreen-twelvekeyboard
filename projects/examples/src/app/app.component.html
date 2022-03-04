@@ -1,10 +1,32 @@
 <ng-template #buttonTemplate let-click="click" let-content="content">
-  <button (click)="click()" mat-raised-button>
+  <button (click)="click()" class="button-class" mat-raised-button color="primary">
     <ng-container [ngTemplateOutlet]="content"></ng-container>
   </button>
 </ng-template>
 
-<input matInput>
+<div style="display: flex; column-gap: 3em; margin: 2em">
+  <div class="keypad-input-container">
+    <mat-form-field>
+      <input [formControl]="inputFormControl" matInput>
+    </mat-form-field>
+    <div *ngIf="keypad.setButton" class="keypad-key-container">
+      <ng-container *ngFor="let key of keypad.languageAssignment.keys[keypad.setButton]; index as i">
+      <span [ngClass]="{'active': keypad.keyAssignmentIndex === i}"
+            class="keypad-key">{{shift ? key.toUpperCase() : key}}</span>
+      </ng-container>
+    </div>
+  </div>
 
-<osk-keypad [buttonTemplate]="buttonTemplate" [language]="'eng'" [timeoutDuration]="3000">
-</osk-keypad>
+  <div class="keypad-container">
+    <osk-keypad #keypad
+                (valueChange)="inputFormControl.setValue($event)"
+                [backspaceEnabled]="true"
+                [buttonTemplate]="buttonTemplate"
+                [clearEnabled]="true"
+                [language]="'eng'"
+                [(shift)]="shift"
+                [timeoutDuration]="2000">
+    </osk-keypad>
+    <button (click)="shift = !shift" mat-raised-button [color]="shift ? 'accent' : 'primary'">Shift</button>
+  </div>
+</div>

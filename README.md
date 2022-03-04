@@ -34,8 +34,12 @@ The selector of the main component is `osk-keypad`.
 The component has the following inputs(:arrow_forward:)/outputs(:arrow_backward:):
 
 - :arrow_forward: `buttonTemplate: TemplateRef<any>`: The template to use for the buttons.
-  See [Theming](#theming)
-  for more information.
+  See [Theming](#theming) for more information.
+- :arrow_forward: `backspaceTemplate: TemplateRef<any>`: The template to use for the backspace button.
+- :arrow_forward: `clearTemplate: TemplateRef<any>`: The template to use for the clear button.
+- :arrow_forward: `backspaceEnabled: boolean`: Whether to enable the backspace button.
+- :arrow_forward: `clearEnabled: boolean`: Whether to enable the clear button.
+- :arrow_forward::arrow_backward: `shift: boolean`: Switches between upper and lower case characters.
 - :arrow_forward: `language: string`: The language to use, as ISO-639-2/B. Defaults to `'eng'`.
   Needs to be a language defined
   in [`src/lib/key-assignments/key-assignments.ts`](projects/ngx-onscreen-twelvekeyboard/src/lib/key-assignments/key-assignments.ts)
