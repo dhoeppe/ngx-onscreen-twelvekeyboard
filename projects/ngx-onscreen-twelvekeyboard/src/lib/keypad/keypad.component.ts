@@ -51,6 +51,22 @@ export class KeypadComponent implements OnInit, OnDestroy {
   @Output()
   valueChange: EventEmitter<string> = new EventEmitter<string>();
 
+  @Output('vanity')
+  vanityChange: EventEmitter<string> = new EventEmitter<string>();
+
+  @Output('pressedKeys')
+  pressedKeysChange: EventEmitter<string> = new EventEmitter<string>();
+
+  private _pressedKeys: string = '';
+
+  public get pressedKeys(): string {
+    return this._pressedKeys;
+  }
+
+  private set pressedKeys(value: string) {
+    this._pressedKeys = value;
+  }
+
   private _keyAssignmentIndex: number = -1;
 
   public get keyAssignmentIndex(): number {
@@ -99,12 +115,15 @@ export class KeypadComponent implements OnInit, OnDestroy {
 
   onButtonClick(button: string) {
     if (this.backspaceEnabled && button === '*') {
+      this.setPressedKeys(this.pressedKeys.substring(0, this.pressedKeys.length - 1));
       this.setValue(this.value.substring(0, this.value.length - 1));
       this.setButton = undefined;
     } else if (this.clearEnabled && button === '#') {
+      this.setPressedKeys('');
       this.setValue('');
       this.setButton = undefined;
     } else {
+      this.setPressedKeys(this.pressedKeys += button);
       if (button !== this.setButton) {
         this.updateValue();
         this.keyAssignmentIndex = 0;
@@ -118,7 +137,15 @@ export class KeypadComponent implements OnInit, OnDestroy {
     this.resetTimeout();
   }
 
-  private resetTimeout() {
+  private updateVanity(): void {
+    let vanity = '^';
+    for (let pressedKey of this.pressedKeys) {
+      vanity += `(${this.languageAssignment.keys[pressedKey].join('|')})`
+    }
+    this.vanityChange.emit(vanity);
+  }
+
+  private resetTimeout(): void {
     window.clearTimeout(this._inputTimeout);
     this._inputTimeout = window.setTimeout(() => {
       if (this.setButton) {
@@ -131,12 +158,18 @@ export class KeypadComponent implements OnInit, OnDestroy {
     }, this.timeoutDuration);
   }
 
-  private setShift(value: boolean) {
+  private setPressedKeys(pressedKeys: string): void {
+    this.pressedKeys = pressedKeys;
+    this.pressedKeysChange.emit(this.pressedKeys);
+    this.updateVanity();
+  }
+
+  private setShift(value: boolean): void {
     this.shift = value;
     this.shiftChange.emit(value);
   }
 
-  private updateValue() {
+  private updateValue(): void {
     if (this.setButton) {
       const newCharacter = this.languageAssignment.keys[this.setButton][this.keyAssignmentIndex];
       this.setValue(this.value +
@@ -145,11 +178,11 @@ export class KeypadComponent implements OnInit, OnDestroy {
     }
   }
 
-  private clearTimeout() {
+  private clearTimeout(): void {
     window.clearTimeout(this._inputTimeout);
   }
 
-  private setValue(value: string) {
+  private setValue(value: string): void {
     this.value = value;
     this.valueChange.emit(this.value);
   }

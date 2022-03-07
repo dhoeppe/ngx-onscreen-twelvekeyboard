@@ -1,32 +1,44 @@
 <ng-template #buttonTemplate let-click="click" let-content="content">
-  <button (click)="click()" class="button-class" mat-raised-button color="primary">
+  <button (click)="click()" class="button-class" color="primary" mat-raised-button>
     <ng-container [ngTemplateOutlet]="content"></ng-container>
   </button>
 </ng-template>
 
 <div style="display: flex; column-gap: 3em; margin: 2em">
-  <div class="keypad-input-container">
-    <mat-form-field>
-      <input [formControl]="inputFormControl" matInput>
-    </mat-form-field>
-    <div *ngIf="keypad.setButton" class="keypad-key-container">
-      <ng-container *ngFor="let key of keypad.languageAssignment.keys[keypad.setButton]; index as i">
+  <div>
+    <div class="keypad-input-container">
+      <mat-form-field>
+        <input [formControl]="inputFormControl" matInput>
+      </mat-form-field>
+      <div *ngIf="keypad.setButton" class="keypad-key-container">
+        <ng-container *ngFor="let key of keypad.languageAssignment.keys[keypad.setButton]; index as i">
       <span [ngClass]="{'active': keypad.keyAssignmentIndex === i}"
             class="keypad-key">{{shift ? key.toUpperCase() : key}}</span>
-      </ng-container>
+        </ng-container>
+      </div>
     </div>
   </div>
 
   <div class="keypad-container">
     <osk-keypad #keypad
                 (valueChange)="inputFormControl.setValue($event)"
+                [(shift)]="shift"
                 [backspaceEnabled]="true"
                 [buttonTemplate]="buttonTemplate"
                 [clearEnabled]="true"
                 [language]="'eng'"
-                [(shift)]="shift"
+                (vanity)="updateFilter($event)"
                 [timeoutDuration]="2000">
     </osk-keypad>
-    <button (click)="shift = !shift" mat-raised-button [color]="shift ? 'accent' : 'primary'">Shift</button>
+    <button (click)="shift = !shift" [color]="shift ? 'accent' : 'primary'" mat-raised-button>
+      Shift
+    </button>
+  </div>
+
+  <div>
+    <span>Current regex: {{vanity}}</span>
+    <ul>
+      <li *ngFor="let name of filteredNames.slice(0,10)">{{name}}</li>
+    </ul>
   </div>
 </div>

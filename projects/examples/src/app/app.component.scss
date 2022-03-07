@@ -5,9 +5,9 @@
 
 .button-class {
   line-height: 1em;
-  padding: 1em;
-  height: 4em;
-  width: 4em;
+  padding:     1em;
+  height:      4em;
+  width:       4em;
 }
 
 .keypad-input-container {
@@ -18,17 +18,17 @@
   padding:        1em;
 }
 
-.keypad-container{
-  display: flex;
+.keypad-container {
+  display:        flex;
   flex-direction: column;
 
-  row-gap: 1em;
+  row-gap:        1em;
 }
 
 .keypad-key-container {
-  position: absolute;
-  top: 2em;
-  width: inherit;
+  position:         absolute;
+  top:              4em;
+  width:            inherit;
 
   display:          flex;
   flex-wrap:        wrap;

@@ -34,7 +34,8 @@
           "options": {
             "main": "projects/ngx-onscreen-twelvekeyboard/src/test.ts",
             "tsConfig": "projects/ngx-onscreen-twelvekeyboard/tsconfig.spec.json",
-            "karmaConfig": "projects/ngx-onscreen-twelvekeyboard/karma.conf.js"
+            "karmaConfig": "projects/ngx-onscreen-twelvekeyboard/karma.conf.js",
+            "codeCoverage": true
           }
         }
       }

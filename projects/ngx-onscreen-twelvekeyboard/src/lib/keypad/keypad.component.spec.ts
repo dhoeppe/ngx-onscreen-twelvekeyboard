@@ -398,4 +398,89 @@ describe('KeypadComponent', () => {
     expect(wrapperKeypadComponent.shift).toBeFalsy();
     expect(spy).toHaveBeenCalledWith(false);
   });
+
+  it('should update vanity immediately on button click (no timeout)', fakeAsync(function () {
+    wrappedKeypad.querySelectorAll('button')[1]?.click();
+
+    tick(timeoutDuration / 2);
+
+    expect(wrapperKeypadComponent.pressedKeys).toBe('2');
+
+    wrappedKeypad.querySelectorAll('button')[1]?.click();
+    wrappedKeypad.querySelectorAll('button')[1]?.click();
+
+    expect(wrapperKeypadComponent.pressedKeys).toBe('222');
+
+    wrappedKeypad.querySelectorAll('button')[5]?.click();
+
+    expect(wrapperKeypadComponent.pressedKeys).toBe('2226');
+
+    tick(timeoutDuration);
+  }));
+
+  it('should remove pressed key if backspace is pressed', function () {
+    wrappedKeypad.querySelectorAll('button')[1]?.click();
+
+    expect(wrapperKeypadComponent.pressedKeys).toBe('2');
+
+    wrappedKeypad.querySelectorAll('button')[1]?.click();
+    wrappedKeypad.querySelectorAll('button')[1]?.click();
+
+    expect(wrapperKeypadComponent.pressedKeys).toBe('222');
+
+    wrappedKeypad.querySelectorAll('button')[9]?.click();
+
+    expect(wrapperKeypadComponent.pressedKeys).toBe('22');
+  });
+
+  it('should clear pressed keys if clear is pressed', function () {
+    wrappedKeypad.querySelectorAll('button')[1]?.click();
+
+    expect(wrapperKeypadComponent.pressedKeys).toBe('2');
+
+    wrappedKeypad.querySelectorAll('button')[1]?.click();
+    wrappedKeypad.querySelectorAll('button')[1]?.click();
+
+    expect(wrapperKeypadComponent.pressedKeys).toBe('222');
+
+    wrappedKeypad.querySelectorAll('button')[11]?.click();
+
+    expect(wrapperKeypadComponent.pressedKeys).toBe('');
+  });
+
+  it('should output regex on every button click (no timeout)', fakeAsync(function () {
+    const spy = spyOn(wrapperKeypadComponent.vanityChange, 'emit');
+
+    wrappedKeypad.querySelectorAll('button')[1]?.click();
+
+    tick(timeoutDuration / 2);
+
+    expect(spy).toHaveBeenCalledWith('^(a|b|c|2|à|â|æ|ç)');
+
+    wrappedKeypad.querySelectorAll('button')[4]?.click();
+
+    tick(timeoutDuration / 2);
+
+    expect(spy).toHaveBeenCalledWith('^(a|b|c|2|à|â|æ|ç)(j|k|l|5)');
+
+    tick(timeoutDuration);
+  }));
+
+  it('should output pressed keys on every button click (no timeout)', fakeAsync(function () {
+    const spy = spyOn(wrapperKeypadComponent.pressedKeysChange, 'emit');
+
+    wrappedKeypad.querySelectorAll('button')[1]?.click();
+
+    tick(timeoutDuration / 2);
+
+    expect(spy).toHaveBeenCalledWith('2');
+
+    wrappedKeypad.querySelectorAll('button')[4]?.click();
+
+    tick(timeoutDuration / 2);
+
+    expect(spy).toHaveBeenCalledWith('25');
+
+    tick(timeoutDuration);
+  }));
 });

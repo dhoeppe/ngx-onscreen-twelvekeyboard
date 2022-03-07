@@ -8,19 +8,21 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatButtonModule} from '@angular/material/button';
 import {ReactiveFormsModule} from '@angular/forms';
 import {TwelveKeyOskbModule} from 'ngx-onscreen-twelvekeyboard';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 @NgModule({
             declarations: [
               AppComponent
             ],
-            imports:      [
+            imports: [
               BrowserModule,
               NoopAnimationsModule,
               MatInputModule,
               TwelveKeyOskbModule,
               MatFormFieldModule,
               MatButtonModule,
-              ReactiveFormsModule
+              ReactiveFormsModule,
+              MatSlideToggleModule
             ],
             providers:    [],
             bootstrap:    [AppComponent]
