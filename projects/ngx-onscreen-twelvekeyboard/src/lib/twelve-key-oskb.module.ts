@@ -7,16 +7,16 @@ import {KeypadBindingDirective} from './keypad/keypad-binding/keypad-binding.dir
 @NgModule({
             declarations: [
               KeypadComponent,
-              KeypadBindingDirective
+              KeypadBindingDirective,
             ],
             imports:      [
-              CommonModule
+              CommonModule,
             ],
             providers:    [],
             exports:      [
               KeypadComponent,
-              KeypadBindingDirective
-            ]
+              KeypadBindingDirective,
+            ],
           })
 export class TwelveKeyOskbModule {
 }

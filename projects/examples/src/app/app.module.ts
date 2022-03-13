@@ -12,7 +12,7 @@ import {TwelveKeyOskbModule} from 'ngx-onscreen-twelvekeyboard';
 
 @NgModule({
             declarations: [
-              AppComponent
+              AppComponent,
             ],
             imports:      [
               BrowserModule,
@@ -22,10 +22,10 @@ import {TwelveKeyOskbModule} from 'ngx-onscreen-twelvekeyboard';
               MatFormFieldModule,
               MatButtonModule,
               ReactiveFormsModule,
-              MatSlideToggleModule
+              MatSlideToggleModule,
             ],
             providers:    [],
-            bootstrap:    [AppComponent]
+            bootstrap:    [AppComponent],
           })
 export class AppModule {
 }

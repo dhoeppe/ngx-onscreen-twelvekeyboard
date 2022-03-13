@@ -5,7 +5,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  TemplateRef
+  TemplateRef,
 } from '@angular/core';
 import {keyAssignments} from '../key-assignments/key-assignments';
 import {ILanguageAssignment} from '../key-assignments/i-language-assignment';
@@ -13,54 +13,54 @@ import {ILanguageAssignment} from '../key-assignments/i-language-assignment';
 @Component({
              selector:    'osk-keypad',
              templateUrl: './keypad.component.html',
-             styleUrls:   ['./keypad.component.scss']
+             styleUrls:   ['./keypad.component.scss'],
            })
 export class KeypadComponent implements OnInit, OnDestroy {
   @Input()
-  buttonTemplate: TemplateRef<any> | undefined;
+  public buttonTemplate: TemplateRef<any> | undefined;
 
   @Input()
-  backspaceTemplate: TemplateRef<any> | undefined;
+  public backspaceTemplate: TemplateRef<any> | undefined;
 
   @Input()
-  clearTemplate: TemplateRef<any> | undefined;
+  public clearTemplate: TemplateRef<any> | undefined;
 
   @Input()
-  language: string | undefined;
+  public language: string | undefined;
 
-  languageAssignment: ILanguageAssignment = keyAssignments['eng'];
-
-  @Input()
-  timeoutDuration: number = 2000;
+  public languageAssignment: ILanguageAssignment = keyAssignments['eng'];
 
   @Input()
-  value: string = '';
+  public timeoutDuration: number = 2000;
 
   @Input()
-  backspaceEnabled: boolean = false;
+  public value: string = '';
 
   @Input()
-  clearEnabled: boolean = false;
+  public backspaceEnabled: boolean = false;
 
   @Input()
-  shift: boolean = false;
+  public clearEnabled: boolean = false;
+
+  @Input()
+  public shift: boolean = false;
 
   @Output()
-  shiftChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  public shiftChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   @Output()
-  valueChange: EventEmitter<string> = new EventEmitter<string>();
+  public valueChange: EventEmitter<string> = new EventEmitter<string>();
 
   @Output('vanity')
-  vanityChange: EventEmitter<string> = new EventEmitter<string>();
+  public vanityChange: EventEmitter<string> = new EventEmitter<string>();
 
   @Output('pressedKeys')
-  pressedKeysChange: EventEmitter<string> = new EventEmitter<string>();
+  public pressedKeysChange: EventEmitter<string> = new EventEmitter<string>();
 
   @Output('inputFocus')
-  inputFocusChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  public inputFocusChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  private _pressedKeys: string = '';
+  private _pressedKeys: string        = '';
 
   public get pressedKeys(): string {
     return this._pressedKeys;
@@ -80,7 +80,7 @@ export class KeypadComponent implements OnInit, OnDestroy {
     this._keyAssignmentIndex = index;
   }
 
-  private _inputTimeout: number = 0;
+  private _inputTimeout: number       = 0;
 
   public get inputTimeout(): number {
     return this._inputTimeout;
@@ -100,7 +100,7 @@ export class KeypadComponent implements OnInit, OnDestroy {
     this._setButton = button;
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     if (!(this.language && this.language in keyAssignments)) {
       console.error(`Given language "${this.language}" is not supported yet.`);
     } else {
@@ -108,25 +108,22 @@ export class KeypadComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.clearTimeout();
   }
 
-  getButtonClickFunction(button: string): any {
+  public getButtonClickFunction(button: string): () => void {
     return () => this.onButtonClick(button);
   }
 
-  onButtonClick(button: string) {
+  public onButtonClick(button: string): void {
     if (this.backspaceEnabled && button === '*') {
-      this.setPressedKeys(this.pressedKeys.substring(0, this.pressedKeys.length - 1));
-      this.setValue(this.value.substring(0, this.value.length - 1));
-      this.setButton = undefined;
+      this.handleBackspace();
     } else if (this.clearEnabled && button === '#') {
-      this.setPressedKeys('');
-      this.setValue('');
-      this.setButton = undefined;
+      this.handleClear();
     } else {
       this.setPressedKeys(this.pressedKeys += button);
+
       if (button !== this.setButton) {
         this.updateValue();
         this.keyAssignmentIndex = 0;
@@ -140,14 +137,26 @@ export class KeypadComponent implements OnInit, OnDestroy {
     this.resetTimeout();
   }
 
-  public emitInputFocusEvent(value: boolean):void{
+  public emitInputFocusEvent(value: boolean): void {
     this.inputFocusChange.emit(value);
+  }
+
+  private handleBackspace(): void {
+    this.setPressedKeys(this.pressedKeys.substring(0, this.pressedKeys.length - 1));
+    this.setValue(this.value.substring(0, this.value.length - 1));
+    this.setButton = void 0;
+  }
+
+  private handleClear(): void {
+    this.setPressedKeys('');
+    this.setValue('');
+    this.setButton = void 0;
   }
 
   private updateVanity(): void {
     let vanity = '^';
-    for (let pressedKey of this.pressedKeys) {
-      vanity += `(${this.languageAssignment.keys[pressedKey].join('|')})`
+    for (const pressedKey of this.pressedKeys) {
+      vanity += `(${this.languageAssignment.keys[pressedKey].join('|')})`;
     }
     this.vanityChange.emit(vanity);
   }
@@ -159,7 +168,7 @@ export class KeypadComponent implements OnInit, OnDestroy {
         this.updateValue();
       }
 
-      this.setButton          = undefined;
+      this.setButton          = void 0;
       this.inputTimeout       = 0;
       this.keyAssignmentIndex = -1;
     }, this.timeoutDuration);

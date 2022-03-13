@@ -4,5 +4,5 @@ import {english_eng} from './english_eng';
 
 export const keyAssignments: { [key: string]: ILanguageAssignment } = {
   'ger': german_ger,
-  'eng': english_eng
+  'eng': english_eng,
 };

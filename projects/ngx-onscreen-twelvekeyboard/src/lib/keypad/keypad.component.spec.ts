@@ -63,7 +63,7 @@ describe('KeypadComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should create wrapper component', function () {
+  it('should create wrapper component', () => {
     expect(wrapperComponent).toBeTruthy();
   });
 
@@ -71,19 +71,19 @@ describe('KeypadComponent', () => {
     expect(keypad.querySelector('div.button-container')).toBeTruthy();
   });
 
-  it('should contain 4 button rows', function () {
+  it('should contain 4 button rows', () => {
     expect(keypad.querySelectorAll('div.button-row')).toHaveSize(4);
   });
 
-  it('should contain 12 buttons in general', function () {
+  it('should contain 12 buttons in general', () => {
     expect(keypad.querySelectorAll('div.button-row button')).toHaveSize(12);
   });
 
-  it('should contain 12 span elements (default template)', function () {
+  it('should contain 12 span elements (default template)', () => {
     expect(keypad.querySelectorAll('span')).toHaveSize(12);
   });
 
-  it('should provide click function to template', function () {
+  it('should provide click function to template', () => {
     const spy = spyOn(component, 'onButtonClick');
 
     keypad.querySelectorAll('button').forEach((value) => value.click());
@@ -91,15 +91,15 @@ describe('KeypadComponent', () => {
     expect(spy).toHaveBeenCalledTimes(12);
   });
 
-  it('should apply the given template', function () {
+  it('should apply the given template', () => {
     expect(wrappedKeypadDebug.queryAll(By.css('.class-to-detect'))).toHaveSize(12);
   });
 
-  it('should configure language on init', function () {
+  it('should configure language on init', () => {
     expect(wrapperComponent.keypadComponent?.languageAssignment).toBeTruthy();
   });
 
-  it('should change bound value on button click', fakeAsync(function () {
+  it('should change bound value on button click', fakeAsync(() => {
     const previousValue = component.value;
 
     keypad.querySelector('button')?.click();
@@ -109,7 +109,7 @@ describe('KeypadComponent', () => {
     expect(component.value).not.toEqual(previousValue);
   }));
 
-  it('should emit event when value is changed', fakeAsync(function () {
+  it('should emit event when value is changed', fakeAsync(() => {
     const spy = spyOn(wrapperKeypadComponent.valueChange, 'emit');
 
     wrappedKeypad.querySelectorAll('button')[1]?.click();
@@ -119,19 +119,19 @@ describe('KeypadComponent', () => {
     expect(spy).toHaveBeenCalledWith(keyAssignments['eng'].keys['2'][0]);
   }));
 
-  it('should set button on button click', function () {
+  it('should set button on button click', () => {
     wrappedKeypad.querySelectorAll('button')[0]?.click();
 
     expect(wrapperKeypadComponent.setButton).toBe('1');
   });
 
-  it('should start timer on button click', function () {
+  it('should start timer on button click', () => {
     wrappedKeypad.querySelectorAll('button')[0]?.click();
 
     expect(wrapperKeypadComponent.inputTimeout).toBeTruthy();
   });
 
-  it('should run a timer for the specified amount of time', fakeAsync(function () {
+  it('should run a timer for the specified amount of time', fakeAsync(() => {
     wrappedKeypad.querySelectorAll('button')[0]?.click();
 
     expect(wrapperKeypadComponent.inputTimeout).toBeTruthy();
@@ -148,7 +148,7 @@ describe('KeypadComponent', () => {
     expect(wrapperKeypadComponent.inputTimeout).toBeFalsy();
   }));
 
-  it('should reset "set button" after timer', fakeAsync(function () {
+  it('should reset "set button" after timer', fakeAsync(() => {
     wrappedKeypad.querySelectorAll('button')[0]?.click();
 
     expect(wrapperKeypadComponent.inputTimeout).toBeTruthy();
@@ -160,7 +160,7 @@ describe('KeypadComponent', () => {
     expect(wrapperKeypadComponent.inputTimeout).toBeFalsy();
   }));
 
-  it('should restart timer on button click', fakeAsync(function () {
+  it('should restart timer on button click', fakeAsync(() => {
     wrappedKeypad.querySelectorAll('button')[0]?.click();
 
     expect(wrapperKeypadComponent.inputTimeout).toBeTruthy();
@@ -188,7 +188,7 @@ describe('KeypadComponent', () => {
   }));
 
   it('should switch "set" button and restart timer if other button than "set" is clicked',
-     fakeAsync(function () {
+     fakeAsync(() => {
        wrappedKeypad.querySelectorAll('button')[0]?.click();
 
        expect(wrapperKeypadComponent.inputTimeout).toBeTruthy();
@@ -207,7 +207,7 @@ describe('KeypadComponent', () => {
        tick(timeoutDuration + 200);
      }));
 
-  it('should reset key assignment index if timeout expires', fakeAsync(function () {
+  it('should reset key assignment index if timeout expires', fakeAsync(() => {
     expect(wrapperKeypadComponent.keyAssignmentIndex).toBe(-1);
 
     wrappedKeypad.querySelectorAll('button')[0]?.click();
@@ -223,7 +223,7 @@ describe('KeypadComponent', () => {
     expect(wrapperKeypadComponent.keyAssignmentIndex).toBe(-1);
   }));
 
-  it('should increase index if button is clicked', function () {
+  it('should increase index if button is clicked', () => {
     expect(wrapperKeypadComponent.keyAssignmentIndex).toBe(-1);
 
     wrappedKeypad.querySelectorAll('button')[0]?.click();
@@ -231,7 +231,7 @@ describe('KeypadComponent', () => {
     expect(wrapperKeypadComponent.keyAssignmentIndex).toBe(0);
   });
 
-  it('should increase index if button is clicked twice within timer', fakeAsync(function () {
+  it('should increase index if button is clicked twice within timer', fakeAsync(() => {
     expect(wrapperKeypadComponent.keyAssignmentIndex).toBe(-1);
 
     wrappedKeypad.querySelectorAll('button')[0]?.click();
@@ -255,7 +255,7 @@ describe('KeypadComponent', () => {
     expect(wrapperKeypadComponent.keyAssignmentIndex).toBe(-1);
   }));
 
-  it('should wrap index around if key assignment length is exceeded', function () {
+  it('should wrap index around if key assignment length is exceeded', () => {
     expect(wrapperKeypadComponent.keyAssignmentIndex).toBe(-1);
 
     for (let i = 0; i <= keyAssignments['eng'].keys['2'].length; i++) {
@@ -266,7 +266,7 @@ describe('KeypadComponent', () => {
   });
 
   it('should reset index if a different button than set button is pressed within timer',
-     function () {
+     () => {
        expect(wrapperKeypadComponent.keyAssignmentIndex).toBe(-1);
 
        wrappedKeypad.querySelectorAll('button')[0]?.click();
@@ -282,7 +282,7 @@ describe('KeypadComponent', () => {
        expect(wrapperKeypadComponent.keyAssignmentIndex).toBe(0);
      });
 
-  it('should set value only after timeout', fakeAsync(function () {
+  it('should set value only after timeout', fakeAsync(() => {
     const spy = spyOn(wrapperKeypadComponent.valueChange, 'emit');
 
     wrappedKeypad.querySelectorAll('button')[1]?.click();
@@ -294,7 +294,7 @@ describe('KeypadComponent', () => {
     expect(spy).toHaveBeenCalledWith(keyAssignments['eng'].keys['2'][0]);
   }));
 
-  it('should remove character if backspace is pressed', function () {
+  it('should remove character if backspace is pressed', () => {
     wrapperKeypadComponent.value = 'abc';
 
     wrappedKeypad.querySelectorAll('button')[9]?.click();
@@ -302,7 +302,7 @@ describe('KeypadComponent', () => {
     expect(wrapperKeypadComponent.value).toBe('ab');
   });
 
-  it('should clear input if clear is pressed', function () {
+  it('should clear input if clear is pressed', () => {
     wrapperKeypadComponent.value = 'abc';
 
     wrappedKeypad.querySelectorAll('button')[11]?.click();
@@ -310,17 +310,17 @@ describe('KeypadComponent', () => {
     expect(wrapperKeypadComponent.value).toBe('');
   });
 
-  it('should render backspace button instead of star if configured', function () {
+  it('should render backspace button instead of star if configured', () => {
     expect(wrappedKeypadDebug.queryAll(By.css('button'))[9].nativeElement.textContent.trim())
       .toBe('<-');
   });
 
-  it('should render clear button instead of hash if configured', function () {
+  it('should render clear button instead of hash if configured', () => {
     expect(wrappedKeypadDebug.queryAll(By.css('button'))[11].nativeElement.textContent.trim())
       .toBe('x');
   });
 
-  it('should render capital characters when shift is true', function () {
+  it('should render capital characters when shift is true', () => {
     expect(wrappedKeypadDebug.queryAll(By.css('button'))[8].nativeElement.textContent.trim())
       .toBe('9wxyz');
 
@@ -333,7 +333,7 @@ describe('KeypadComponent', () => {
   });
 
   it('should submit character if another button than set button is pressed while timeout is active',
-     fakeAsync(function () {
+     fakeAsync(() => {
        wrappedKeypad.querySelectorAll('button')[1]?.click();
 
        tick(timeoutDuration / 2);
@@ -349,7 +349,7 @@ describe('KeypadComponent', () => {
 
   it(
     'should submit character if another button than set button is pressed while timeout is active, with character switch',
-    fakeAsync(function () {
+    fakeAsync(() => {
       wrappedKeypad.querySelectorAll('button')[1]?.click();
       wrappedKeypad.querySelectorAll('button')[1]?.click();
 
@@ -362,7 +362,7 @@ describe('KeypadComponent', () => {
       tick(timeoutDuration + 200);
     }));
 
-  it('should submit uppercase character if shift is enabled', fakeAsync(function () {
+  it('should submit uppercase character if shift is enabled', fakeAsync(() => {
     wrapperKeypadComponent.shift = true;
 
     wrappedKeypad.querySelectorAll('button')[1]?.click();
@@ -372,7 +372,7 @@ describe('KeypadComponent', () => {
     expect(wrapperKeypadComponent.value).toBe('A');
   }));
 
-  it('should disable shift after character has been submitted by timeout', fakeAsync(function () {
+  it('should disable shift after character has been submitted by timeout', fakeAsync(() => {
     const spy = spyOn(wrapperKeypadComponent.shiftChange, 'emit');
 
     wrapperKeypadComponent.shift = true;
@@ -386,7 +386,7 @@ describe('KeypadComponent', () => {
     expect(spy).toHaveBeenCalledWith(false);
   }));
 
-  it('should disable shift after character has been submitted by clicking other key', function () {
+  it('should disable shift after character has been submitted by clicking other key', () => {
     const spy = spyOn(wrapperKeypadComponent.shiftChange, 'emit');
 
     wrapperKeypadComponent.shift = true;
@@ -399,7 +399,7 @@ describe('KeypadComponent', () => {
     expect(spy).toHaveBeenCalledWith(false);
   });
 
-  it('should update vanity immediately on button click (no timeout)', fakeAsync(function () {
+  it('should update vanity immediately on button click (no timeout)', fakeAsync(() => {
     wrappedKeypad.querySelectorAll('button')[1]?.click();
 
     tick(timeoutDuration / 2);
@@ -418,7 +418,7 @@ describe('KeypadComponent', () => {
     tick(timeoutDuration);
   }));
 
-  it('should remove pressed key if backspace is pressed', function () {
+  it('should remove pressed key if backspace is pressed', () => {
     wrappedKeypad.querySelectorAll('button')[1]?.click();
 
     expect(wrapperKeypadComponent.pressedKeys).toBe('2');
@@ -433,7 +433,7 @@ describe('KeypadComponent', () => {
     expect(wrapperKeypadComponent.pressedKeys).toBe('22');
   });
 
-  it('should clear pressed keys if clear is pressed', function () {
+  it('should clear pressed keys if clear is pressed', () => {
     wrappedKeypad.querySelectorAll('button')[1]?.click();
 
     expect(wrapperKeypadComponent.pressedKeys).toBe('2');
@@ -448,7 +448,7 @@ describe('KeypadComponent', () => {
     expect(wrapperKeypadComponent.pressedKeys).toBe('');
   });
 
-  it('should output regex on every button click (no timeout)', fakeAsync(function () {
+  it('should output regex on every button click (no timeout)', fakeAsync(() => {
     const spy = spyOn(wrapperKeypadComponent.vanityChange, 'emit');
 
     wrappedKeypad.querySelectorAll('button')[1]?.click();
@@ -466,7 +466,7 @@ describe('KeypadComponent', () => {
     tick(timeoutDuration);
   }));
 
-  it('should output pressed keys on every button click (no timeout)', fakeAsync(function () {
+  it('should output pressed keys on every button click (no timeout)', fakeAsync(() => {
     const spy = spyOn(wrapperKeypadComponent.pressedKeysChange, 'emit');
 
     wrappedKeypad.querySelectorAll('button')[1]?.click();
@@ -484,7 +484,7 @@ describe('KeypadComponent', () => {
     tick(timeoutDuration);
   }));
 
-  it('should emit focus event on method call', function () {
+  it('should emit focus event on method call', () => {
     const spy = spyOn(wrapperKeypadComponent.inputFocusChange, 'emit');
 
     wrapperKeypadComponent.emitInputFocusEvent(true);
