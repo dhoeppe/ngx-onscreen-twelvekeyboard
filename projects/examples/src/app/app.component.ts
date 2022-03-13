@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {random_names} from '../assets/random-names';
+import {KeypadBindingDirective} from 'ngx-onscreen-twelvekeyboard/lib/keypad/keypad-binding/keypad-binding.directive';
 
 @Component({
              selector:    'ex-root',
@@ -12,6 +13,8 @@ export class AppComponent {
 
   inputValue: string = '';
 
+  keypadVisible: boolean = false;
+
   shift: boolean = false;
 
   filteredNames: string[] = [];
@@ -19,7 +22,7 @@ export class AppComponent {
   vanity: string = '';
 
   updateFilter(regex: string) {
-    this.vanity = regex;
+    this.vanity        = regex;
     this.filteredNames = random_names.filter((value) => value.toLowerCase().match(regex));
   }
 }

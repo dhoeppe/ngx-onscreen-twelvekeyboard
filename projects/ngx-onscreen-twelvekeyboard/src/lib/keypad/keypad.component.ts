@@ -57,6 +57,9 @@ export class KeypadComponent implements OnInit, OnDestroy {
   @Output('pressedKeys')
   pressedKeysChange: EventEmitter<string> = new EventEmitter<string>();
 
+  @Output('inputFocus')
+  inputFocusChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   private _pressedKeys: string = '';
 
   public get pressedKeys(): string {
@@ -135,6 +138,10 @@ export class KeypadComponent implements OnInit, OnDestroy {
     }
 
     this.resetTimeout();
+  }
+
+  public emitInputFocusEvent(value: boolean):void{
+    this.inputFocusChange.emit(value);
   }
 
   private updateVanity(): void {

@@ -483,4 +483,16 @@ describe('KeypadComponent', () => {
 
     tick(timeoutDuration);
   }));
+
+  it('should emit focus event on method call', function () {
+    const spy = spyOn(wrapperKeypadComponent.inputFocusChange, 'emit');
+
+    wrapperKeypadComponent.emitInputFocusEvent(true);
+
+    expect(spy).toHaveBeenCalledWith(true);
+
+    wrapperKeypadComponent.emitInputFocusEvent(false);
+
+    expect(spy).toHaveBeenCalledWith(false);
+  });
 });

@@ -8,7 +8,7 @@
   <div>
     <div class="keypad-input-container">
       <mat-form-field>
-        <input [formControl]="inputFormControl" matInput>
+        <input [formControl]="inputFormControl" [keypadBinding]="keypad" (keypadFocus)="keypadVisible = $event" matInput>
       </mat-form-field>
       <div *ngIf="keypad.setButton" class="keypad-key-container">
         <ng-container *ngFor="let key of keypad.languageAssignment.keys[keypad.setButton]; index as i">
@@ -19,15 +19,15 @@
     </div>
   </div>
 
-  <div class="keypad-container">
+  <div [ngClass]="{'active': keypadVisible}" class="keypad-container">
     <osk-keypad #keypad
                 (valueChange)="inputFormControl.setValue($event)"
+                (vanity)="updateFilter($event)"
                 [(shift)]="shift"
                 [backspaceEnabled]="true"
                 [buttonTemplate]="buttonTemplate"
                 [clearEnabled]="true"
                 [language]="'eng'"
-                (vanity)="updateFilter($event)"
                 [timeoutDuration]="2000">
     </osk-keypad>
     <button (click)="shift = !shift" [color]="shift ? 'accent' : 'primary'" mat-raised-button>

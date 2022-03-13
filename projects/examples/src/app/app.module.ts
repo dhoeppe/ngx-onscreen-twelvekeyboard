@@ -7,14 +7,14 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatButtonModule} from '@angular/material/button';
 import {ReactiveFormsModule} from '@angular/forms';
-import {TwelveKeyOskbModule} from 'ngx-onscreen-twelvekeyboard';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {TwelveKeyOskbModule} from 'ngx-onscreen-twelvekeyboard';
 
 @NgModule({
             declarations: [
               AppComponent
             ],
-            imports: [
+            imports:      [
               BrowserModule,
               NoopAnimationsModule,
               MatInputModule,

@@ -74,6 +74,22 @@ quick succession would output 'ada' and after timeout 'adad'.
 
 TODO add animation
 
+If not using the helper directive (see below), it is required to sync the internal value of the
+keypad with the bound control. You can use the `[(value)]` input/output to do so.
+
+### Helper directive
+
+The library provides a directive `[keypadBinding]` to bind `<input>` elements to the keypad,
+supporting Angulars Reactive Forms. The directive requires the keypad to be passed. The directive
+also outputs an event on `(keypadFocus)` either `true` when focused or `false` when blurred.
+
+When a keypad is bound to this directive, the `(inputFocus)` output on the keypad emits an event,
+either `true` when focused or `false` when blurred.
+
+```angular2html
+<input [formControl]="inputFormControl" [keypadBinding]="keypad" matInput>
+```
+
 ### Vanity support
 
 The keypad allows you to easily implement a vanity search function. The `vanity` output emits a
