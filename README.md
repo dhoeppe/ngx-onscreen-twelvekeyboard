@@ -1,3 +1,10 @@
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/8edee4d60e144332b26db59ab0feb1b3)](https://www.codacy.com/gh/dhoeppe/ngx-onscreen-twelvekeyboard/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dhoeppe/ngx-onscreen-twelvekeyboard&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/8edee4d60e144332b26db59ab0feb1b3)](https://www.codacy.com/gh/dhoeppe/ngx-onscreen-twelvekeyboard/dashboard?utm_source=github.com&utm_medium=referral&utm_content=dhoeppe/ngx-onscreen-twelvekeyboard&utm_campaign=Badge_Coverage)
+[![GitHub Badge](https://img.shields.io/github/workflow/status/dhoeppe/ngx-onscreen-twelvekeyboard/Publish%20new%20release)](https://github.com/dhoeppe/ngx-onscreen-twelvekeyboard/actions/workflows/npm-publish.yml)
+[![npm Badge](https://img.shields.io/npm/dw/ngx-onscreen-twelvekeyboard)](https://www.npmjs.com/package/ngx-onscreen-twelvekeyboard)
+[![GitHub Badge](https://img.shields.io/github/license/dhoeppe/ngx-onscreen-twelvekeyboard)](https://github.com/dhoeppe/ngx-onscreen-twelvekeyboard/blob/main/LICENSE)
+[![GitHub Badge](https://img.shields.io/github/v/tag/dhoeppe/ngx-onscreen-twelvekeyboard)](https://github.com/dhoeppe/ngx-onscreen-twelvekeyboard/releases)
+
 # Twelve-Key On-Screen Touch Keypad for Angular
 
 A twelve key (0-9, * and #) keypad on-screen touch keyboard for Angular applications.
@@ -31,7 +38,19 @@ To add a language:
 
 ## Usage
 
-The selector of the main component is `osk-keypad`.
+### Installation
+
+The library is published on npm. To install:
+
+```shell
+npm install ngx-onscreen-twelvekeyboard
+```
+
+### Library components
+
+**KeypadComponent**
+
+The selector of the main component (`KeypadComponent`) is `<osk-keypad>`.
 
 The component has the following inputs(:arrow_forward:)/outputs(:arrow_backward:):
 
@@ -47,7 +66,7 @@ The component has the following inputs(:arrow_forward:)/outputs(:arrow_backward:
 
 -   :arrow_forward: `clearEnabled: boolean`: Whether to enable the clear button.
 
--   :arrow_forward::arrow_backward: `shift: boolean`: Switches between upper and lower case
+-   :arrow_backward::arrow_forward: `shift: boolean`: Switches between upper and lower case
     characters. Emits `false` after `value` has been updated.
 
 -   :arrow_forward: `language: string`: The language to use, as ISO-639-2/B. Defaults to `'eng'`.
@@ -57,7 +76,7 @@ The component has the following inputs(:arrow_forward:)/outputs(:arrow_backward:
 -   :arrow_forward: `timeoutDuration: number`: Specifies the duration of the timeout until the
     selected character is added. Defaults to `2000`.
 
--   :arrow_forward::arrow_backward: `value: string`: The internal value of the keyboard, should be
+-   :arrow_backward::arrow_forward: `value: string`: The internal value of the keyboard, should be
     bound to an `<input>` element, updates only after the timeout has expired OR a different key
     than before has been pressed.
 
@@ -66,6 +85,10 @@ The component has the following inputs(:arrow_forward:)/outputs(:arrow_backward:
 
 -   :arrow_backward: `vanity: string`: A regex that corresponds to the character assignments of the
     pressed keys. Updates immediately on button click.
+
+**KeypadBindingDirective**
+
+TODO
 
 ### Basic functionality
 
