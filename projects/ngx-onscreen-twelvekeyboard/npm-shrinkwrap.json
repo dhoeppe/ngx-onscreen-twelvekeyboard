@@ -1,0 +1,20 @@
+{
+  "name": "ngx-onscreen-twelvekeyboard",
+  "version": "1.0.2",
+  "lockfileVersion": 2,
+  "requires": true,
+  "packages": {
+    "": {
+      "name": "ngx-onscreen-twelvekeyboard",
+      "version": "1.0.2",
+      "license": "MIT",
+      "dependencies": {
+        "tslib": "^2.1.0"
+      },
+      "peerDependencies": {
+        "@angular/common": ">=12.x.x",
+        "@angular/core": ">=12.x.x"
+      }
+    }
+  }
+}
