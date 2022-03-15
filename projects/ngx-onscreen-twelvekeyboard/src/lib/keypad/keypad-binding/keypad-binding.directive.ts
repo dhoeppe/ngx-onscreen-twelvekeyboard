@@ -21,6 +21,10 @@ export class KeypadBindingDirective implements AfterViewInit {
   @Output('keypadFocus')
   public keypadFocusChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+  private focused: boolean = false;
+
+  private control: AbstractControl | undefined;
+
   constructor(@Optional() private ngControl: NgControl,
               @Optional() private formControlName: FormControlName) {
   }
@@ -43,22 +47,37 @@ export class KeypadBindingDirective implements AfterViewInit {
   public onHostFocus(): void {
     this.keypadBinding.emitInputFocusEvent(true);
     this.keypadFocusChange.emit(true);
+    this.focused = true;
+    this.setInternalStateToBoundControl();
   }
 
   @HostListener('blur')
   public onHostBlur(): void {
     this.keypadBinding.emitInputFocusEvent(false);
     this.keypadFocusChange.emit(false);
+    this.focused = false;
+  }
+
+  private setInternalStateToBoundControl(): void {
+    this.keypadBinding.value = this.control?.value;
   }
 
   private setupBoundControl(): void {
     const control = this.formControl;
 
     if (control) {
+      this.control = control;
+
       control.valueChanges?.subscribe((value) => {
-        this.keypadBinding.value = value;
+        if (this.focused) {
+          this.keypadBinding.value = value;
+        }
       });
-      this.keypadBinding.valueChange.subscribe((value) => control.setValue(value));
+      this.keypadBinding.valueChange.subscribe((value) => {
+        if (this.focused) {
+          control.setValue(value);
+        }
+      });
     } else {
       console.warn('Keypad not bound to form control. No control could be found.');
     }

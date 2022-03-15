@@ -139,6 +139,7 @@ describe('KeypadBindingDirective', () => {
 
   it('should update form control when keypad value is changed', () => {
     const newValue = 'test123';
+    component.inputElement?.nativeElement.dispatchEvent(new FocusEvent('focus'));
 
     component.keypadComponent?.valueChange.emit(newValue);
 
@@ -147,6 +148,7 @@ describe('KeypadBindingDirective', () => {
 
   it('should update keypad when form control value is changed', () => {
     const newValue = 'test123';
+    component.inputElement?.nativeElement.dispatchEvent(new FocusEvent('focus'));
 
     component.formControl.setValue(newValue);
 
@@ -183,6 +185,7 @@ describe('KeypadBindingDirective', () => {
   it('should update keypad when using formControlName', () => {
     const nameFixture = TestBed.createComponent(ControlNameComponent);
     nameFixture.detectChanges();
+    nameFixture.componentInstance.inputElement?.nativeElement.dispatchEvent(new FocusEvent('focus'));
 
     const testValue = 'test321';
 
@@ -194,6 +197,7 @@ describe('KeypadBindingDirective', () => {
   it('should update formControl when using formControlName', () => {
     const nameFixture = TestBed.createComponent(ControlNameComponent);
     nameFixture.detectChanges();
+    nameFixture.componentInstance.inputElement?.nativeElement.dispatchEvent(new FocusEvent('focus'));
 
     const testValue = 'test321';
 
@@ -205,6 +209,7 @@ describe('KeypadBindingDirective', () => {
   it('should update formControl when using formControlName in nested group', () => {
     const nestedFixture = TestBed.createComponent(NestedControlNameComponent);
     nestedFixture.detectChanges();
+    nestedFixture.componentInstance.inputElement?.nativeElement.dispatchEvent(new FocusEvent('focus'));
 
     const testValue = 'test321';
 
@@ -212,5 +217,29 @@ describe('KeypadBindingDirective', () => {
 
     expect(nestedFixture.componentInstance.formGroup.get('testSubGroup.testControl')?.value)
       .toBe(testValue);
+  });
+
+  it('should only update value if input is focused', () => {
+    const newValue = 'test123';
+    const oldValue = 'failure123';
+
+    component.formControl.setValue(oldValue);
+
+    component.keypadComponent?.valueChange.emit(newValue);
+    expect(component.formControl.value).toBe(oldValue);
+
+    component.inputElement?.nativeElement.dispatchEvent(new FocusEvent('focus'));
+    component.keypadComponent?.valueChange.emit(newValue);
+    expect(component.formControl.value).toBe(newValue);
+  });
+
+  it('should set internal state to controls state when focused', function () {
+    const newValue = 'test123';
+
+    component.formControl.setValue(newValue);
+    expect(component.keypadComponent?.value).not.toBe(newValue);
+
+    component.inputElement?.nativeElement.dispatchEvent(new FocusEvent('focus'));
+    expect(component.keypadComponent?.value).toBe(newValue);
   });
 });
