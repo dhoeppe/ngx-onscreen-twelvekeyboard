@@ -2,13 +2,15 @@ import {
   AfterViewInit,
   Directive,
   EventEmitter,
+  Host,
   HostListener,
   Input,
   Optional,
   Output,
+  SkipSelf,
 } from '@angular/core';
 import {KeypadComponent} from '../keypad.component';
-import {NgControl} from '@angular/forms';
+import {AbstractControl, ControlContainer, NgControl} from '@angular/forms';
 
 @Directive({
              selector: '[keypadBinding]',
@@ -18,10 +20,24 @@ export class KeypadBindingDirective implements AfterViewInit {
   @Input()
   public keypadBinding!: KeypadComponent;
 
+  @Input('formControlName')
+  public formControlName: string | undefined = void 0;
+
   @Output('keypadFocus')
   public keypadFocusChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor(@Optional() private ngControl: NgControl) {
+  constructor(@Optional() private ngControl: NgControl,
+              @Host() @SkipSelf() @Optional() private controlContainer: ControlContainer) {
+  }
+
+  private get formControl(): AbstractControl | undefined | null {
+    if (this.formControlName) {
+      return this.controlContainer.control?.get(this.formControlName);
+    } else if (this.ngControl) {
+      return this.ngControl.control;
+    } else {
+      return void 0;
+    }
   }
 
   public ngAfterViewInit(): void {
@@ -41,13 +57,15 @@ export class KeypadBindingDirective implements AfterViewInit {
   }
 
   private setupBoundControl(): void {
-    if (this.ngControl) {
-      this.ngControl.valueChanges?.subscribe((value) => {
+    const control = this.formControl;
+
+    if (control) {
+      control.valueChanges?.subscribe((value) => {
         this.keypadBinding.value = value;
       });
-      this.keypadBinding.valueChange.subscribe((value) => this.ngControl?.control?.setValue(value));
+      this.keypadBinding.valueChange.subscribe((value) => control.setValue(value));
     } else {
-      console.warn('Keypad not bound to form control. No NgControl could be injected.');
+      console.warn('Keypad not bound to form control. No control could be found.');
     }
   }
 }

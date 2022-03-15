@@ -2,7 +2,7 @@ import {Component, ElementRef, ViewChild} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {KeypadBindingDirective} from './keypad-binding.directive';
 import {KeypadComponent} from '../keypad.component';
-import {FormControl, ReactiveFormsModule} from '@angular/forms';
+import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 
 @Component({
              template: `
@@ -17,6 +17,27 @@ class WrapperComponent {
   @ViewChild('inputElement') inputElement: ElementRef | undefined;
 
   formControl: FormControl = new FormControl();
+}
+
+@Component({
+             template: `
+                         <osk-keypad #keypad></osk-keypad>
+
+                         <form [formGroup]="formGroup">
+                           <input formControlName="testControl"
+                                  #inputElement
+                                  [keypadBinding]="keypad">
+                         </form>
+                       `
+           })
+class ControlNameComponent {
+  @ViewChild(KeypadBindingDirective) directive: KeypadBindingDirective | undefined;
+  @ViewChild(KeypadComponent) keypadComponent: KeypadComponent | undefined;
+  @ViewChild('inputElement') inputElement: ElementRef | undefined;
+
+  formGroup: FormGroup = new FormGroup({
+                                         'testControl': new FormControl(),
+                                       })
 }
 
 @Component({
@@ -44,6 +65,7 @@ describe('KeypadBindingDirective', () => {
                                              KeypadComponent,
                                              WrapperComponent,
                                              ErroneousWrapperComponent,
+                                             ControlNameComponent,
                                              KeypadBindingDirective,
                                            ],
                                            imports:      [
@@ -106,7 +128,7 @@ describe('KeypadBindingDirective', () => {
     errorFixture.detectChanges();
 
     expect(spy)
-      .toHaveBeenCalledWith('Keypad not bound to form control. No NgControl could be injected.');
+      .toHaveBeenCalledWith('Keypad not bound to form control. No control could be found.');
   });
 
   it('should call passed function with true/false when host component is focused/blurred',
@@ -125,4 +147,26 @@ describe('KeypadBindingDirective', () => {
          fail();
        }
      });
+
+  it('should update keypad when using formControlName', () => {
+    const nameFixture = TestBed.createComponent(ControlNameComponent);
+    nameFixture.detectChanges();
+
+    const testValue = 'test321';
+
+    nameFixture.componentInstance.formGroup.get('testControl')?.setValue(testValue);
+
+    expect(nameFixture.componentInstance.keypadComponent?.value).toBe(testValue);
+  });
+
+  it('should update formControl when using formControlName', () => {
+    const nameFixture = TestBed.createComponent(ControlNameComponent);
+    nameFixture.detectChanges();
+
+    const testValue = 'test321';
+
+    nameFixture.componentInstance.keypadComponent?.valueChange.emit(testValue);
+
+    expect(nameFixture.componentInstance.formGroup.get('testControl')?.value).toBe(testValue);
+  });
 });
