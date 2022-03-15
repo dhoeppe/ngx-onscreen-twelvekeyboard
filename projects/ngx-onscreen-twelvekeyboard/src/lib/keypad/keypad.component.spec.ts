@@ -8,7 +8,7 @@ import {keyAssignments} from '../key-assignments/key-assignments';
 @Component({
              template: `
                          <ng-template #buttonTemplate let-click="click" let-content="content">
-                           <button class="class-to-detect" (click)="click()">
+                           <button class="class-to-detect" (mousedown)="click($event)">
                              <ng-container [ngTemplateOutlet]="content"></ng-container>
                            </button>
                          </ng-template>
@@ -86,7 +86,8 @@ describe('KeypadComponent', () => {
   it('should provide click function to template', () => {
     const spy = spyOn(component, 'onButtonClick');
 
-    keypad.querySelectorAll('button').forEach((value) => value.click());
+    keypad.querySelectorAll('button')
+          .forEach((value) => value.dispatchEvent(new MouseEvent('mousedown')));
 
     expect(spy).toHaveBeenCalledTimes(12);
   });
@@ -102,7 +103,7 @@ describe('KeypadComponent', () => {
   it('should change bound value on button click', fakeAsync(() => {
     const previousValue = component.value;
 
-    keypad.querySelector('button')?.click();
+    keypad.querySelector('button')?.dispatchEvent(new MouseEvent('mousedown'));
 
     tick(timeoutDuration + 200);
 
@@ -112,7 +113,7 @@ describe('KeypadComponent', () => {
   it('should emit event when value is changed', fakeAsync(() => {
     const spy = spyOn(wrapperKeypadComponent.valueChange, 'emit');
 
-    wrappedKeypad.querySelectorAll('button')[1]?.click();
+    wrappedKeypad.querySelectorAll('button')[1]?.dispatchEvent(new MouseEvent('mousedown'));
 
     tick(timeoutDuration + 200);
 
@@ -120,19 +121,19 @@ describe('KeypadComponent', () => {
   }));
 
   it('should set button on button click', () => {
-    wrappedKeypad.querySelectorAll('button')[0]?.click();
+    wrappedKeypad.querySelectorAll('button')[0]?.dispatchEvent(new MouseEvent('mousedown'));
 
     expect(wrapperKeypadComponent.setButton).toBe('1');
   });
 
   it('should start timer on button click', () => {
-    wrappedKeypad.querySelectorAll('button')[0]?.click();
+    wrappedKeypad.querySelectorAll('button')[0]?.dispatchEvent(new MouseEvent('mousedown'));
 
     expect(wrapperKeypadComponent.inputTimeout).toBeTruthy();
   });
 
   it('should run a timer for the specified amount of time', fakeAsync(() => {
-    wrappedKeypad.querySelectorAll('button')[0]?.click();
+    wrappedKeypad.querySelectorAll('button')[0]?.dispatchEvent(new MouseEvent('mousedown'));
 
     expect(wrapperKeypadComponent.inputTimeout).toBeTruthy();
     expect(wrapperKeypadComponent.setButton).not.toBeUndefined();
@@ -149,7 +150,7 @@ describe('KeypadComponent', () => {
   }));
 
   it('should reset "set button" after timer', fakeAsync(() => {
-    wrappedKeypad.querySelectorAll('button')[0]?.click();
+    wrappedKeypad.querySelectorAll('button')[0]?.dispatchEvent(new MouseEvent('mousedown'));
 
     expect(wrapperKeypadComponent.inputTimeout).toBeTruthy();
     expect(wrapperKeypadComponent.setButton).not.toBeUndefined();
@@ -161,7 +162,7 @@ describe('KeypadComponent', () => {
   }));
 
   it('should restart timer on button click', fakeAsync(() => {
-    wrappedKeypad.querySelectorAll('button')[0]?.click();
+    wrappedKeypad.querySelectorAll('button')[0]?.dispatchEvent(new MouseEvent('mousedown'));
 
     expect(wrapperKeypadComponent.inputTimeout).toBeTruthy();
     expect(wrapperKeypadComponent.setButton).toBe('1');
@@ -171,7 +172,7 @@ describe('KeypadComponent', () => {
     expect(wrapperKeypadComponent.inputTimeout).toBeTruthy();
     expect(wrapperKeypadComponent.setButton).toBe('1');
 
-    wrappedKeypad.querySelectorAll('button')[0]?.click();
+    wrappedKeypad.querySelectorAll('button')[0]?.dispatchEvent(new MouseEvent('mousedown'));
 
     expect(wrapperKeypadComponent.inputTimeout).toBeTruthy();
     expect(wrapperKeypadComponent.setButton).toBe('1');
@@ -189,7 +190,7 @@ describe('KeypadComponent', () => {
 
   it('should switch "set" button and restart timer if other button than "set" is clicked',
      fakeAsync(() => {
-       wrappedKeypad.querySelectorAll('button')[0]?.click();
+       wrappedKeypad.querySelectorAll('button')[0]?.dispatchEvent(new MouseEvent('mousedown'));
 
        expect(wrapperKeypadComponent.inputTimeout).toBeTruthy();
        expect(wrapperKeypadComponent.setButton).toBe('1');
@@ -199,7 +200,7 @@ describe('KeypadComponent', () => {
        expect(wrapperKeypadComponent.inputTimeout).toBeTruthy();
        expect(wrapperKeypadComponent.setButton).toBe('1');
 
-       wrappedKeypad.querySelectorAll('button')[1]?.click();
+       wrappedKeypad.querySelectorAll('button')[1]?.dispatchEvent(new MouseEvent('mousedown'));
 
        expect(wrapperKeypadComponent.inputTimeout).toBeTruthy();
        expect(wrapperKeypadComponent.setButton).toBe('2');
@@ -210,7 +211,7 @@ describe('KeypadComponent', () => {
   it('should reset key assignment index if timeout expires', fakeAsync(() => {
     expect(wrapperKeypadComponent.keyAssignmentIndex).toBe(-1);
 
-    wrappedKeypad.querySelectorAll('button')[0]?.click();
+    wrappedKeypad.querySelectorAll('button')[0]?.dispatchEvent(new MouseEvent('mousedown'));
 
     expect(wrapperKeypadComponent.keyAssignmentIndex).toBe(0);
 
@@ -226,7 +227,7 @@ describe('KeypadComponent', () => {
   it('should increase index if button is clicked', () => {
     expect(wrapperKeypadComponent.keyAssignmentIndex).toBe(-1);
 
-    wrappedKeypad.querySelectorAll('button')[0]?.click();
+    wrappedKeypad.querySelectorAll('button')[0]?.dispatchEvent(new MouseEvent('mousedown'));
 
     expect(wrapperKeypadComponent.keyAssignmentIndex).toBe(0);
   });
@@ -234,7 +235,7 @@ describe('KeypadComponent', () => {
   it('should increase index if button is clicked twice within timer', fakeAsync(() => {
     expect(wrapperKeypadComponent.keyAssignmentIndex).toBe(-1);
 
-    wrappedKeypad.querySelectorAll('button')[0]?.click();
+    wrappedKeypad.querySelectorAll('button')[0]?.dispatchEvent(new MouseEvent('mousedown'));
 
     expect(wrapperKeypadComponent.keyAssignmentIndex).toBe(0);
 
@@ -242,7 +243,7 @@ describe('KeypadComponent', () => {
 
     expect(wrapperKeypadComponent.keyAssignmentIndex).toBe(0);
 
-    wrappedKeypad.querySelectorAll('button')[0]?.click();
+    wrappedKeypad.querySelectorAll('button')[0]?.dispatchEvent(new MouseEvent('mousedown'));
 
     expect(wrapperKeypadComponent.keyAssignmentIndex).toBe(1);
 
@@ -259,7 +260,7 @@ describe('KeypadComponent', () => {
     expect(wrapperKeypadComponent.keyAssignmentIndex).toBe(-1);
 
     for (let i = 0; i <= keyAssignments['eng'].keys['2'].length; i++) {
-      wrappedKeypad.querySelectorAll('button')[1]?.click();
+      wrappedKeypad.querySelectorAll('button')[1]?.dispatchEvent(new MouseEvent('mousedown'));
     }
 
     expect(wrapperKeypadComponent.keyAssignmentIndex).toBe(0);
@@ -269,15 +270,15 @@ describe('KeypadComponent', () => {
      () => {
        expect(wrapperKeypadComponent.keyAssignmentIndex).toBe(-1);
 
-       wrappedKeypad.querySelectorAll('button')[0]?.click();
+       wrappedKeypad.querySelectorAll('button')[0]?.dispatchEvent(new MouseEvent('mousedown'));
 
        expect(wrapperKeypadComponent.keyAssignmentIndex).toBe(0);
 
-       wrappedKeypad.querySelectorAll('button')[0]?.click();
+       wrappedKeypad.querySelectorAll('button')[0]?.dispatchEvent(new MouseEvent('mousedown'));
 
        expect(wrapperKeypadComponent.keyAssignmentIndex).toBe(1);
 
-       wrappedKeypad.querySelectorAll('button')[1]?.click();
+       wrappedKeypad.querySelectorAll('button')[1]?.dispatchEvent(new MouseEvent('mousedown'));
 
        expect(wrapperKeypadComponent.keyAssignmentIndex).toBe(0);
      });
@@ -285,7 +286,7 @@ describe('KeypadComponent', () => {
   it('should set value only after timeout', fakeAsync(() => {
     const spy = spyOn(wrapperKeypadComponent.valueChange, 'emit');
 
-    wrappedKeypad.querySelectorAll('button')[1]?.click();
+    wrappedKeypad.querySelectorAll('button')[1]?.dispatchEvent(new MouseEvent('mousedown'));
 
     expect(spy).not.toHaveBeenCalledWith(keyAssignments['eng'].keys['2'][0]);
 
@@ -297,7 +298,7 @@ describe('KeypadComponent', () => {
   it('should remove character if backspace is pressed', () => {
     wrapperKeypadComponent.value = 'abc';
 
-    wrappedKeypad.querySelectorAll('button')[9]?.click();
+    wrappedKeypad.querySelectorAll('button')[9]?.dispatchEvent(new MouseEvent('mousedown'));
 
     expect(wrapperKeypadComponent.value).toBe('ab');
   });
@@ -305,7 +306,7 @@ describe('KeypadComponent', () => {
   it('should clear input if clear is pressed', () => {
     wrapperKeypadComponent.value = 'abc';
 
-    wrappedKeypad.querySelectorAll('button')[11]?.click();
+    wrappedKeypad.querySelectorAll('button')[11]?.dispatchEvent(new MouseEvent('mousedown'));
 
     expect(wrapperKeypadComponent.value).toBe('');
   });
@@ -334,11 +335,11 @@ describe('KeypadComponent', () => {
 
   it('should submit character if another button than set button is pressed while timeout is active',
      fakeAsync(() => {
-       wrappedKeypad.querySelectorAll('button')[1]?.click();
+       wrappedKeypad.querySelectorAll('button')[1]?.dispatchEvent(new MouseEvent('mousedown'));
 
        tick(timeoutDuration / 2);
 
-       wrappedKeypad.querySelectorAll('button')[2]?.click();
+       wrappedKeypad.querySelectorAll('button')[2]?.dispatchEvent(new MouseEvent('mousedown'));
 
        tick(timeoutDuration / 2);
 
@@ -350,12 +351,12 @@ describe('KeypadComponent', () => {
   it(
     'should submit character if another button than set button is pressed while timeout is active, with character switch',
     fakeAsync(() => {
-      wrappedKeypad.querySelectorAll('button')[1]?.click();
-      wrappedKeypad.querySelectorAll('button')[1]?.click();
+      wrappedKeypad.querySelectorAll('button')[1]?.dispatchEvent(new MouseEvent('mousedown'));
+      wrappedKeypad.querySelectorAll('button')[1]?.dispatchEvent(new MouseEvent('mousedown'));
 
       tick(timeoutDuration / 2);
 
-      wrappedKeypad.querySelectorAll('button')[2]?.click();
+      wrappedKeypad.querySelectorAll('button')[2]?.dispatchEvent(new MouseEvent('mousedown'));
 
       expect(wrapperKeypadComponent.value).toBe('b');
 
@@ -365,7 +366,7 @@ describe('KeypadComponent', () => {
   it('should submit uppercase character if shift is enabled', fakeAsync(() => {
     wrapperKeypadComponent.shift = true;
 
-    wrappedKeypad.querySelectorAll('button')[1]?.click();
+    wrappedKeypad.querySelectorAll('button')[1]?.dispatchEvent(new MouseEvent('mousedown'));
 
     tick(timeoutDuration + 200);
 
@@ -377,7 +378,7 @@ describe('KeypadComponent', () => {
 
     wrapperKeypadComponent.shift = true;
 
-    wrappedKeypad.querySelectorAll('button')[1]?.click();
+    wrappedKeypad.querySelectorAll('button')[1]?.dispatchEvent(new MouseEvent('mousedown'));
 
     tick(timeoutDuration + 200);
 
@@ -391,8 +392,8 @@ describe('KeypadComponent', () => {
 
     wrapperKeypadComponent.shift = true;
 
-    wrappedKeypad.querySelectorAll('button')[1]?.click();
-    wrappedKeypad.querySelectorAll('button')[2]?.click();
+    wrappedKeypad.querySelectorAll('button')[1]?.dispatchEvent(new MouseEvent('mousedown'));
+    wrappedKeypad.querySelectorAll('button')[2]?.dispatchEvent(new MouseEvent('mousedown'));
 
     expect(wrapperKeypadComponent.value).toBe('A');
     expect(wrapperKeypadComponent.shift).toBeFalsy();
@@ -400,18 +401,18 @@ describe('KeypadComponent', () => {
   });
 
   it('should update vanity immediately on button click (no timeout)', fakeAsync(() => {
-    wrappedKeypad.querySelectorAll('button')[1]?.click();
+    wrappedKeypad.querySelectorAll('button')[1]?.dispatchEvent(new MouseEvent('mousedown'));
 
     tick(timeoutDuration / 2);
 
     expect(wrapperKeypadComponent.pressedKeys).toBe('2');
 
-    wrappedKeypad.querySelectorAll('button')[1]?.click();
-    wrappedKeypad.querySelectorAll('button')[1]?.click();
+    wrappedKeypad.querySelectorAll('button')[1]?.dispatchEvent(new MouseEvent('mousedown'));
+    wrappedKeypad.querySelectorAll('button')[1]?.dispatchEvent(new MouseEvent('mousedown'));
 
     expect(wrapperKeypadComponent.pressedKeys).toBe('222');
 
-    wrappedKeypad.querySelectorAll('button')[5]?.click();
+    wrappedKeypad.querySelectorAll('button')[5]?.dispatchEvent(new MouseEvent('mousedown'));
 
     expect(wrapperKeypadComponent.pressedKeys).toBe('2226');
 
@@ -419,31 +420,31 @@ describe('KeypadComponent', () => {
   }));
 
   it('should remove pressed key if backspace is pressed', () => {
-    wrappedKeypad.querySelectorAll('button')[1]?.click();
+    wrappedKeypad.querySelectorAll('button')[1]?.dispatchEvent(new MouseEvent('mousedown'));
 
     expect(wrapperKeypadComponent.pressedKeys).toBe('2');
 
-    wrappedKeypad.querySelectorAll('button')[1]?.click();
-    wrappedKeypad.querySelectorAll('button')[1]?.click();
+    wrappedKeypad.querySelectorAll('button')[1]?.dispatchEvent(new MouseEvent('mousedown'));
+    wrappedKeypad.querySelectorAll('button')[1]?.dispatchEvent(new MouseEvent('mousedown'));
 
     expect(wrapperKeypadComponent.pressedKeys).toBe('222');
 
-    wrappedKeypad.querySelectorAll('button')[9]?.click();
+    wrappedKeypad.querySelectorAll('button')[9]?.dispatchEvent(new MouseEvent('mousedown'));
 
     expect(wrapperKeypadComponent.pressedKeys).toBe('22');
   });
 
   it('should clear pressed keys if clear is pressed', () => {
-    wrappedKeypad.querySelectorAll('button')[1]?.click();
+    wrappedKeypad.querySelectorAll('button')[1]?.dispatchEvent(new MouseEvent('mousedown'));
 
     expect(wrapperKeypadComponent.pressedKeys).toBe('2');
 
-    wrappedKeypad.querySelectorAll('button')[1]?.click();
-    wrappedKeypad.querySelectorAll('button')[1]?.click();
+    wrappedKeypad.querySelectorAll('button')[1]?.dispatchEvent(new MouseEvent('mousedown'));
+    wrappedKeypad.querySelectorAll('button')[1]?.dispatchEvent(new MouseEvent('mousedown'));
 
     expect(wrapperKeypadComponent.pressedKeys).toBe('222');
 
-    wrappedKeypad.querySelectorAll('button')[11]?.click();
+    wrappedKeypad.querySelectorAll('button')[11]?.dispatchEvent(new MouseEvent('mousedown'));
 
     expect(wrapperKeypadComponent.pressedKeys).toBe('');
   });
@@ -451,13 +452,13 @@ describe('KeypadComponent', () => {
   it('should output regex on every button click (no timeout)', fakeAsync(() => {
     const spy = spyOn(wrapperKeypadComponent.vanityChange, 'emit');
 
-    wrappedKeypad.querySelectorAll('button')[1]?.click();
+    wrappedKeypad.querySelectorAll('button')[1]?.dispatchEvent(new MouseEvent('mousedown'));
 
     tick(timeoutDuration / 2);
 
     expect(spy).toHaveBeenCalledWith('^(a|b|c|2|à|â|æ|ç)');
 
-    wrappedKeypad.querySelectorAll('button')[4]?.click();
+    wrappedKeypad.querySelectorAll('button')[4]?.dispatchEvent(new MouseEvent('mousedown'));
 
     tick(timeoutDuration / 2);
 
@@ -469,13 +470,13 @@ describe('KeypadComponent', () => {
   it('should output pressed keys on every button click (no timeout)', fakeAsync(() => {
     const spy = spyOn(wrapperKeypadComponent.pressedKeysChange, 'emit');
 
-    wrappedKeypad.querySelectorAll('button')[1]?.click();
+    wrappedKeypad.querySelectorAll('button')[1]?.dispatchEvent(new MouseEvent('mousedown'));
 
     tick(timeoutDuration / 2);
 
     expect(spy).toHaveBeenCalledWith('2');
 
-    wrappedKeypad.querySelectorAll('button')[4]?.click();
+    wrappedKeypad.querySelectorAll('button')[4]?.dispatchEvent(new MouseEvent('mousedown'));
 
     tick(timeoutDuration / 2);
 

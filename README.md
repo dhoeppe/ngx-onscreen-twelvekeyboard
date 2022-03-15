@@ -172,7 +172,7 @@ Materials `mat-raised-button`.
 ```angular2html
 
 <ng-template #youMayUseAnyName let-click="click" let-content="content">
-  <button (click)="click()" class="button-class" color="primary" mat-raised-button>
+  <button (mousedown)="click($event)">
     <ng-container [ngTemplateOutlet]="content"></ng-container>
   </button>
 </ng-template>

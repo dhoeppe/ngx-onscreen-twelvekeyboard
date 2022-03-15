@@ -60,7 +60,7 @@ export class KeypadComponent implements OnInit, OnDestroy {
   @Output('inputFocus')
   public inputFocusChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  private _pressedKeys: string        = '';
+  private _pressedKeys: string = '';
 
   public get pressedKeys(): string {
     return this._pressedKeys;
@@ -80,7 +80,7 @@ export class KeypadComponent implements OnInit, OnDestroy {
     this._keyAssignmentIndex = index;
   }
 
-  private _inputTimeout: number       = 0;
+  private _inputTimeout: number = 0;
 
   public get inputTimeout(): number {
     return this._inputTimeout;
@@ -112,11 +112,13 @@ export class KeypadComponent implements OnInit, OnDestroy {
     this.clearTimeout();
   }
 
-  public getButtonClickFunction(button: string): () => void {
-    return () => this.onButtonClick(button);
+  public getButtonClickFunction(button: string): (event: MouseEvent) => void {
+    return (event) => this.onButtonClick(button, event);
   }
 
-  public onButtonClick(button: string): void {
+  public onButtonClick(button: string, event: MouseEvent): void {
+    event.preventDefault();
+
     if (this.backspaceEnabled && button === '*') {
       this.handleBackspace();
     } else if (this.clearEnabled && button === '#') {

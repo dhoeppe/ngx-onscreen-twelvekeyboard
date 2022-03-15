@@ -2,15 +2,13 @@ import {
   AfterViewInit,
   Directive,
   EventEmitter,
-  Host,
   HostListener,
   Input,
   Optional,
   Output,
-  SkipSelf,
 } from '@angular/core';
 import {KeypadComponent} from '../keypad.component';
-import {AbstractControl, ControlContainer, NgControl} from '@angular/forms';
+import {AbstractControl, FormControlName, NgControl} from '@angular/forms';
 
 @Directive({
              selector: '[keypadBinding]',
@@ -20,19 +18,16 @@ export class KeypadBindingDirective implements AfterViewInit {
   @Input()
   public keypadBinding!: KeypadComponent;
 
-  @Input('formControlName')
-  public formControlName: string | undefined = void 0;
-
   @Output('keypadFocus')
   public keypadFocusChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(@Optional() private ngControl: NgControl,
-              @Host() @SkipSelf() @Optional() private controlContainer: ControlContainer) {
+              @Optional() private formControlName: FormControlName) {
   }
 
   private get formControl(): AbstractControl | undefined | null {
     if (this.formControlName) {
-      return this.controlContainer.control?.get(this.formControlName);
+      return this.formControlName.control;
     } else if (this.ngControl) {
       return this.ngControl.control;
     } else {

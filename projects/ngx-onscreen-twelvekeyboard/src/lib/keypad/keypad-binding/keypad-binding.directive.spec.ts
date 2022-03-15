@@ -2,7 +2,7 @@ import {Component, ElementRef, ViewChild} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {KeypadBindingDirective} from './keypad-binding.directive';
 import {KeypadComponent} from '../keypad.component';
-import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 
 @Component({
              template: `
@@ -34,10 +34,41 @@ class ControlNameComponent {
   @ViewChild(KeypadBindingDirective) directive: KeypadBindingDirective | undefined;
   @ViewChild(KeypadComponent) keypadComponent: KeypadComponent | undefined;
   @ViewChild('inputElement') inputElement: ElementRef | undefined;
+  public formGroup: FormGroup;
 
-  formGroup: FormGroup = new FormGroup({
-                                         'testControl': new FormControl(),
-                                       })
+  constructor(private fb: FormBuilder) {
+    this.formGroup = this.fb.group({
+                                     testControl: [''],
+                                   });
+  }
+}
+
+@Component({
+             template: `
+                         <osk-keypad #keypad></osk-keypad>
+
+                         <form [formGroup]="formGroup">
+                           <div formGroupName="testSubGroup">
+                             <input formControlName="testControl"
+                                    #inputElement
+                                    [keypadBinding]="keypad">
+                           </div>
+                         </form>
+                       `
+           })
+class NestedControlNameComponent {
+  @ViewChild(KeypadBindingDirective) directive: KeypadBindingDirective | undefined;
+  @ViewChild(KeypadComponent) keypadComponent: KeypadComponent | undefined;
+  @ViewChild('inputElement') inputElement: ElementRef | undefined;
+  public formGroup: FormGroup;
+
+  constructor(private fb: FormBuilder) {
+    this.formGroup = this.fb.group({
+                                     testSubGroup: this.fb.group({
+                                                                   testControl: [''],
+                                                                 }),
+                                   });
+  }
 }
 
 @Component({
@@ -66,6 +97,7 @@ describe('KeypadBindingDirective', () => {
                                              WrapperComponent,
                                              ErroneousWrapperComponent,
                                              ControlNameComponent,
+                                             NestedControlNameComponent,
                                              KeypadBindingDirective,
                                            ],
                                            imports:      [
@@ -168,5 +200,17 @@ describe('KeypadBindingDirective', () => {
     nameFixture.componentInstance.keypadComponent?.valueChange.emit(testValue);
 
     expect(nameFixture.componentInstance.formGroup.get('testControl')?.value).toBe(testValue);
+  });
+
+  it('should update formControl when using formControlName in nested group', () => {
+    const nestedFixture = TestBed.createComponent(NestedControlNameComponent);
+    nestedFixture.detectChanges();
+
+    const testValue = 'test321';
+
+    nestedFixture.componentInstance.keypadComponent?.valueChange.emit(testValue);
+
+    expect(nestedFixture.componentInstance.formGroup.get('testSubGroup.testControl')?.value)
+      .toBe(testValue);
   });
 });
