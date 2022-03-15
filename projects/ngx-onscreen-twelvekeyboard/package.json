@@ -1,7 +1,7 @@
 {
   "name": "ngx-onscreen-twelvekeyboard",
   "description": "A twelve key (0-9, * and #) keypad on-screen touch keyboard for Angular applications.",
-  "version": "1.1.1",
+  "version": "2.0.0",
   "readme": "README.md",
   "keywords": [
     "keyboard",
