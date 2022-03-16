@@ -124,8 +124,6 @@ export class KeypadComponent implements OnInit, OnDestroy {
     } else if (this.clearEnabled && button === '#') {
       this.handleClear();
     } else {
-      this.setPressedKeys(this.pressedKeys += button);
-
       if (button !== this.setButton) {
         this.updateValue();
         this.keyAssignmentIndex = 0;
@@ -134,9 +132,17 @@ export class KeypadComponent implements OnInit, OnDestroy {
                                   this.languageAssignment.keys[button].length;
       }
       this.setButton = button;
+      this.setPressedKeys(this.pressedKeys += button);
     }
 
     this.resetTimeout();
+  }
+
+  public reset(): void {
+    this.pressedKeys        = '';
+    this.value              = '';
+    this.keyAssignmentIndex = -1;
+    this.setButton          = void 0;
   }
 
   public emitInputFocusEvent(value: boolean): void {
