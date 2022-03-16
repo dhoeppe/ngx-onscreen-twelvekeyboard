@@ -496,4 +496,20 @@ describe('KeypadComponent', () => {
 
     expect(spy).toHaveBeenCalledWith(false);
   });
+
+  it('should reset internal state when reset function is called', function () {
+    wrappedKeypad.querySelectorAll('button')[4]?.dispatchEvent(new MouseEvent('mousedown'));
+    wrappedKeypad.querySelectorAll('button')[4]?.dispatchEvent(new MouseEvent('mousedown'));
+    wrappedKeypad.querySelectorAll('button')[3]?.dispatchEvent(new MouseEvent('mousedown'));
+    wrappedKeypad.querySelectorAll('button')[2]?.dispatchEvent(new MouseEvent('mousedown'));
+    wrappedKeypad.querySelectorAll('button')[7]?.dispatchEvent(new MouseEvent('mousedown'));
+
+    expect(wrapperKeypadComponent.value).not.toBe('');
+    expect(wrapperKeypadComponent.pressedKeys).not.toBe('');
+
+    wrapperKeypadComponent.reset();
+
+    expect(wrapperKeypadComponent.value).toBe('');
+    expect(wrapperKeypadComponent.pressedKeys).toBe('');
+  });
 });

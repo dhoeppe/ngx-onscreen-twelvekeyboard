@@ -54,37 +54,39 @@ The selector of the main component (`KeypadComponent`) is `<osk-keypad>`.
 
 The component has the following inputs(:arrow_forward:)/outputs(:arrow_backward:):
 
--   :arrow_forward: `buttonTemplate: TemplateRef<any>`: The template to use for the buttons.
+- :arrow_forward: `buttonTemplate: TemplateRef<any>`: The template to use for the buttons.
     See [Theming](#theming) for more information.
 
--   :arrow_forward: `backspaceTemplate: TemplateRef<any>`: The template to use for the backspace
+- :arrow_forward: `backspaceTemplate: TemplateRef<any>`: The template to use for the backspace
     button.
 
--   :arrow_forward: `clearTemplate: TemplateRef<any>`: The template to use for the clear button.
+- :arrow_forward: `clearTemplate: TemplateRef<any>`: The template to use for the clear button.
 
--   :arrow_forward: `backspaceEnabled: boolean`: Whether to enable the backspace button.
+- :arrow_forward: `backspaceEnabled: boolean`: Whether to enable the backspace button.
 
--   :arrow_forward: `clearEnabled: boolean`: Whether to enable the clear button.
+- :arrow_forward: `clearEnabled: boolean`: Whether to enable the clear button.
 
--   :arrow_backward::arrow_forward: `shift: boolean`: Switches between upper and lower case
+- :arrow_backward::arrow_forward: `shift: boolean`: Switches between upper and lower case
     characters. Emits `false` after `value` has been updated.
 
--   :arrow_forward: `language: string`: The language to use, as ISO-639-2/B. Defaults to `'eng'`.
+- :arrow_forward: `language: string`: The language to use, as ISO-639-2/B. Defaults to `'eng'`.
     Needs to be a language defined
     in [`src/lib/key-assignments/key-assignments.ts`](projects/ngx-onscreen-twelvekeyboard/src/lib/key-assignments/key-assignments.ts)
 
--   :arrow_forward: `timeoutDuration: number`: Specifies the duration of the timeout until the
+- :arrow_forward: `timeoutDuration: number`: Specifies the duration of the timeout until the
     selected character is added. Defaults to `2000`.
 
--   :arrow_backward::arrow_forward: `value: string`: The internal value of the keyboard, should be
+- :arrow_backward::arrow_forward: `value: string`: The internal value of the keyboard, should be
     bound to an `<input>` element, updates only after the timeout has expired OR a different key
     than before has been pressed.
 
--   :arrow_backward: `pressedKeys: string`: A string containing all pressed keys. Updates
+- :arrow_backward: `pressedKeys: string`: A string containing all pressed keys. Updates
     immediately on button click.
 
--   :arrow_backward: `vanity: string`: A regex that corresponds to the character assignments of the
+- :arrow_backward: `vanity: string`: A regex that corresponds to the character assignments of the
     pressed keys. Updates immediately on button click.
+
+You may use the `reset()` function to reset the internal state of the `KeypadComponent`.
 
 **KeypadBindingDirective**
 
